@@ -18,11 +18,14 @@ public class CharacterController2D : MonoBehaviour
 	
     private BoxCollider2D boxCollider;
 	private Animator animator;
+	private Rigidbody2D rigidbody;
 
     private Vector2 velocity;
 	
 	private bool walking = false;
 	private bool falling = false;
+	
+	private int bridgeCounter = 0;
 	
 	private float xSpeed = 1f;
 	private float ySpeed = 0f;
@@ -30,8 +33,10 @@ public class CharacterController2D : MonoBehaviour
     private void Awake()
     {      
         boxCollider = GetComponent<BoxCollider2D>();
+        rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 		
+		rigidbody.isKinematic = true;
         Button btn = button.GetComponent<Button>();
         btn.onClick.AddListener(TaskOnClick);
     }
@@ -79,8 +84,18 @@ public class CharacterController2D : MonoBehaviour
 	
 	public void FallDown()
 	{
+		if(bridgeCounter > 0)
+		{
+			return;
+		}
+		
 		walking = false;
 		falling = true;
 		velocity = new Vector2(0f, -1f);
+	}
+	
+	public void ChangeBridgeCounter(int value)
+	{
+		bridgeCounter += value;
 	}
 }

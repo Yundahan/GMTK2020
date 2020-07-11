@@ -108,11 +108,7 @@ public class CharacterController2D : MonoBehaviour
 		
 		if(collisionCount >= maxCollisions)
 		{
-			dead = true;
-			velocity = new Vector2(0f, 0f);
-			xSpeed = 0f;
-			ySpeed = 0f;
-			WakeUp();
+			WakeUpStill();
 		}
 		
 		transform.Translate(velocity * Time.deltaTime);
@@ -318,6 +314,15 @@ public class CharacterController2D : MonoBehaviour
 		walking = false;
 		falling = true;
 		velocity = new Vector2(0f, -1f);
+		WakeUp();
+	}
+	
+	public void WakeUpStill()
+	{
+		dead = true;
+		velocity = new Vector2(0f, 0f);
+		xSpeed = 0f;
+		ySpeed = 0f;
 		WakeUp();
 	}
 	

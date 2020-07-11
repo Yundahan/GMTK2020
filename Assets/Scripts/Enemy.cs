@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
     [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
     public float speed;
 	
-
     //[SerializeField, Tooltip("Acceleration while grounded.")]
     //float walkAcceleration = 75;
 
@@ -30,10 +29,6 @@ public class Enemy : MonoBehaviour
 	private BoxCollider2D orangePortalCollider;
 
     private Vector2 velocity;
-	
-	private bool walking = false;
-	private bool falling = false;
-	private bool dead = false;
 	
 	public float xSpeed;
 	public float ySpeed;
@@ -56,7 +51,6 @@ public class Enemy : MonoBehaviour
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
 		rigidbody.isKinematic = true;
-        startButton.GetComponent<Button>().onClick.AddListener(StartWalking);
         restartButton.GetComponent<Button>().onClick.AddListener(Restart);
 		
 		initXSpeed = xSpeed;
@@ -67,24 +61,6 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-		if(!walking && !falling)
-		{
-			return;
-		}
-		
-		if(dead)
-		{
-			return;
-		}
-		
-		if(!walking)
-		{
-			transform.Translate(velocity * Time.deltaTime);
-			velocity.y -= 1f;
-			return;
-		}
-		
-		
 		transform.Translate(velocity * Time.deltaTime);
 		velocity.x = speed * xSpeed;
 		velocity.y = speed * ySpeed;
@@ -99,6 +75,11 @@ public class Enemy : MonoBehaviour
 	
 	void OnTriggerEnter2D(Collider2D col)
 	{
+		if(col.gameObject.name == "Sleepyboi")
+		{
+			col.gameObject.GetComponent<CharacterController2D>().WakeUpStill();
+		}
+		
 		if(col.gameObject == wall)
 		{
 			xSpeed *= -1f;
@@ -233,15 +214,8 @@ public class Enemy : MonoBehaviour
 		}
 	}
 	
-	void StartWalking()
-	{
-		walking = true;
-	}
-	
 	void Restart()
 	{
-		walking = false;
-		falling = false;
 		xSpeed = initXSpeed;
 		ySpeed = initYSpeed;
 		startButton.GetComponent<Button>().interactable = true;

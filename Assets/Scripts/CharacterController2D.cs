@@ -173,7 +173,7 @@ public class CharacterController2D : MonoBehaviour
 
 			if((Mathf.Abs(relativePortalPosition.z - defaultRotation.z) >0.01f))
 			{
-				Debug.Log(relativePortalPosition+ " OrangeIn");	
+				//Debug.Log(relativePortalPosition+ " OrangeIn");	
 				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
 				{
 					float newVerticalMovement = (-1f*xSpeed);
@@ -182,7 +182,7 @@ public class CharacterController2D : MonoBehaviour
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("QuarterRotationBlueOut");
+					//Debug.Log("QuarterRotationBlueOut");
 					
 				}
 				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
@@ -191,7 +191,7 @@ public class CharacterController2D : MonoBehaviour
 					ySpeed *= -1f;
 					animator.SetFloat("xSpeed", xSpeed);
 					animator.SetFloat("ySpeed", ySpeed);
-					Debug.Log("HalfRotationBlueOut");
+					//Debug.Log("HalfRotationBlueOut");
 				}
 				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
 				{
@@ -201,7 +201,7 @@ public class CharacterController2D : MonoBehaviour
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("ThreeQuarterRotationBlueOut");
+					//Debug.Log("ThreeQuarterRotationBlueOut");
 				}
 				
 			}
@@ -239,12 +239,12 @@ public class CharacterController2D : MonoBehaviour
 			{	
 				Vector2 portalPush = new Vector2 (0,-2f);
 				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
-				Debug.Log("ThreeQuarterPortalPush");
+				//Debug.Log("ThreeQuarterPortalPush");
 			}	
 			
 			if(relativePortalPosition != defaultRotation)
 			{
-				Debug.Log(relativePortalPosition + " BlueIn");	
+				//Debug.Log(relativePortalPosition + " BlueIn");	
 				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
 				{
 					float newVerticalMovement = (1f*xSpeed);
@@ -253,7 +253,7 @@ public class CharacterController2D : MonoBehaviour
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("QuarterRotationOrangeOut");
+					//Debug.Log("QuarterRotationOrangeOut");
 				}
 				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
 				{
@@ -261,7 +261,7 @@ public class CharacterController2D : MonoBehaviour
 					ySpeed *= -1f;
 					animator.SetFloat("xSpeed", xSpeed);
 					animator.SetFloat("ySpeed", ySpeed);
-					Debug.Log("HalfRotationOrangeOut");
+					//Debug.Log("HalfRotationOrangeOut");
 				}
 				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
 				{
@@ -271,7 +271,7 @@ public class CharacterController2D : MonoBehaviour
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("ThreeQuarterRotationOrangeOut");
+					//Debug.Log("ThreeQuarterRotationOrangeOut");
 				}
 				
 			}

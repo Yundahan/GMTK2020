@@ -5,15 +5,22 @@ using UnityEngine.UI;
 
 public class Placement : MonoBehaviour
 {
-	public GameObject[] allButtons;
+	public GameObject canvas;
+	private BoxCollider2D[] allButtons;
+	
+	public GameObject wall;
+	private BoxCollider2D[] allColliders;
 	
 	public CharacterController2D charController;
 	
 	public GameObject bridge;
 	public GameObject angularWall;
+	public GameObject bluePortal;
+	public GameObject orangePortal;
 	
 	public Button placeBridge;
 	public Button placeAngularWall;
+	public Button placePortal;
 	
 	public Button rotateBridge;
 	public Button rotateAngularWall;
@@ -22,7 +29,8 @@ public class Placement : MonoBehaviour
 	{
 		None,
 		Bridge,
-		AngularWall
+		AngularWall,
+		Portal
 	}
 	
 	ObjectType currentObject = ObjectType.None;
@@ -34,6 +42,9 @@ public class Placement : MonoBehaviour
         rotateBridge.GetComponent<Button>().onClick.AddListener(RotateBridge);
         placeAngularWall.GetComponent<Button>().onClick.AddListener(PlaceAngularWall);
         rotateAngularWall.GetComponent<Button>().onClick.AddListener(RotateAngularWall);
+		placePortal.GetComponent<Button>().onClick.AddListener(PlacePortal);
+		allButtons = canvas.GetComponentsInChildren<BoxCollider2D>();
+		allColliders = wall.GetComponentsInChildren<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -41,15 +52,15 @@ public class Placement : MonoBehaviour
     {
 		Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		
-		foreach(GameObject go in allButtons)
+		foreach(BoxCollider2D col in allButtons)
 		{
-			Bounds buttonBounds = go.GetComponent<BoxCollider2D>().bounds;
+			Bounds buttonBounds = col.bounds;
 			
 			if(newPos.x < buttonBounds.max.x &&
 			   newPos.x > buttonBounds.min.x &&
 			   newPos.y < buttonBounds.max.y &&
 			   newPos.y > buttonBounds.min.y &&
-			   go.activeSelf)
+			   col.gameObject.activeSelf)
 			{
 				return;
 			}
@@ -70,8 +81,60 @@ public class Placement : MonoBehaviour
 				case ObjectType.AngularWall:
 					angularWall.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);
 					break;
+				case ObjectType.Portal:
+					newPos.z = 0;
+					float dist = 5000f;
+					Vector3 point = new Vector3(0f, 0f, 0f);
+					
+					foreach(BoxCollider2D col in allColliders)
+					{
+						Vector3 closestPoint = col.bounds.ClosestPoint(newPos);
+						float tempDist = Vector3.Distance(closestPoint, newPos);
+						
+						if(tempDist < dist)
+						{
+							dist = tempDist;
+							point = closestPoint;
+						}
+					}
+					
+					Vector3 direction = newPos - point;
+					float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+					angle = Mathf.Round(angle / 90) * 90;
+					bluePortal.transform.position = point;
+					bluePortal.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+					break;
 				default:
 					break;
+			}
+		}
+		
+		if(Input.GetMouseButtonDown(1))
+		{
+			if(currentObject == ObjectType.Portal)
+			{
+				newPos.z = 0;
+				float dist = 5000f;
+				Vector3 point = new Vector3(0f, 0f, 0f);
+				
+				foreach(BoxCollider2D col in allColliders)
+				{
+					Vector3 closestPoint = col.bounds.ClosestPoint(newPos);
+					float tempDist = Vector3.Distance(closestPoint, newPos);
+					
+					if(tempDist < dist)
+					{
+						dist = tempDist;
+						point = closestPoint;
+					}
+				}
+				
+				Vector3 direction = newPos - point;
+				float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+				angle += 180;
+				angle = Mathf.Round(angle / 90) * 90;
+				orangePortal.transform.position = point;
+				orangePortal.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
 			}
 		}
     }
@@ -84,6 +147,11 @@ public class Placement : MonoBehaviour
 	void PlaceAngularWall()
 	{
 		currentObject = ObjectType.AngularWall;
+	}
+	
+	void PlacePortal()
+	{
+		currentObject = ObjectType.Portal;
 	}
 	
 	void RotateBridge()

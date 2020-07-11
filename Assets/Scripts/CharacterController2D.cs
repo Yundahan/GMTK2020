@@ -321,8 +321,8 @@ public class CharacterController2D : MonoBehaviour
 	{
 		dead = true;
 		velocity = new Vector2(0f, 0f);
-		xSpeed = 0f;
-		ySpeed = 0f;
+		xSpeed = initXSpeed;
+		ySpeed = initXSpeed;
 		WakeUp();
 	}
 	

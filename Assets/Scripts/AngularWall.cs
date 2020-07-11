@@ -107,4 +107,11 @@ public class AngularWall : MonoBehaviour
 			ignoreY.Remove(go);
 		}
 	}
+	
+	void Reset()
+	{
+		alreadyTurned.Clear();
+		ignoreX.Clear();
+		ignoreY.Clear();
+	}
 }

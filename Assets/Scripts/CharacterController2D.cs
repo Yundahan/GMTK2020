@@ -102,7 +102,7 @@ public class CharacterController2D : MonoBehaviour
 		if(!walking)
 		{
 			transform.Translate(velocity * Time.deltaTime);
-			velocity.y -= 1f;
+			velocity.y -= 0.1f;
 			return;
 		}
 		
@@ -328,6 +328,7 @@ public class CharacterController2D : MonoBehaviour
 	
 	public void WakeUp()
 	{
+		collisionCount = 0;
 		restartButton.SetActive(true);
 		MainThemePiano.Stop();
 		MainThemeOrchestra.Stop();
@@ -335,6 +336,7 @@ public class CharacterController2D : MonoBehaviour
 		DeathTheme.volume = 0.3f;
 		animator.enabled = false;
 		GetComponent<SpriteRenderer>().sprite = deadSprite;
+		angularWall.SendMessage("Reset");
 	}	
 	
 	public void ChangeBridgeCounter(int value)

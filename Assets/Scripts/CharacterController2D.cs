@@ -9,7 +9,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
     float speed = 5f;
 	
-	public const int maxCollisions = 5;
+	public int maxCollisions = 5;
 	private int collisionCount = 0;
 
     //[SerializeField, Tooltip("Acceleration while grounded.")]

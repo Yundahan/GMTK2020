@@ -49,6 +49,7 @@ public class CharacterController2D : MonoBehaviour
 	private float initYSpeed;
 	
 	public Sprite deadSprite;
+	private Sprite initSprite;
 	
 	public AudioSource MainThemePiano;
 	public AudioSource MainThemeOrchestra;
@@ -76,6 +77,7 @@ public class CharacterController2D : MonoBehaviour
 		initYSpeed = ySpeed;
 		initXPos = transform.position.x;
 		initYPos = transform.position.y;
+		initSprite = GetComponent<SpriteRenderer>().sprite;
 		
 		MainThemeOrchestra.Play();
 		MainThemePiano.Play();
@@ -292,12 +294,15 @@ public class CharacterController2D : MonoBehaviour
 		falling = false;
 		xSpeed = initXSpeed;
 		ySpeed = initYSpeed;
+		animator.SetFloat("xSpeed", initXSpeed);
+		animator.SetFloat("ySpeed", initYSpeed);
 		bridgeCounter = 0;
 		startButton.GetComponent<Button>().interactable = true;
 		restartButton.SetActive(false);
 		transform.position = new Vector2(initXPos, initYPos);
 		velocity = new Vector2(0f, 0f);
-		GetComponent<Animator>().enabled = true;
+		animator.enabled = false;
+		GetComponent<SpriteRenderer>().sprite = initSprite;
 		MainThemeOrchestra.Play();
 		MainThemeOrchestra.volume = 0;
 		MainThemePiano.Play();
@@ -306,7 +311,7 @@ public class CharacterController2D : MonoBehaviour
 	
 	public void FallDown()
 	{
-		if(bridgeCounter > 0 || !falling)
+		if(bridgeCounter > 0 || falling)
 		{
 			return;
 		}

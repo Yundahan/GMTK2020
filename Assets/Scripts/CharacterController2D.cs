@@ -12,7 +12,9 @@ public class CharacterController2D : MonoBehaviour
     //[SerializeField, Tooltip("Acceleration while grounded.")]
     //float walkAcceleration = 75;
 
-	public Button button;
+	public Button startButton;
+	public GameObject restartButton;
+	
 	public GameObject wall;
 	public GameObject ground;
 	
@@ -29,6 +31,11 @@ public class CharacterController2D : MonoBehaviour
 	
 	private float xSpeed = 1f;
 	private float ySpeed = 0f;
+	
+	private float initXPos;
+	private float initYPos;
+	private float initXSpeed;
+	private float initYSpeed;
 
     private void Awake()
     {      
@@ -37,8 +44,13 @@ public class CharacterController2D : MonoBehaviour
         animator = GetComponent<Animator>();
 		
 		rigidbody.isKinematic = true;
-        Button btn = button.GetComponent<Button>();
-        btn.onClick.AddListener(TaskOnClick);
+        startButton.GetComponent<Button>().onClick.AddListener(StartWalking);
+        restartButton.GetComponent<Button>().onClick.AddListener(Restart);
+		
+		initXSpeed = xSpeed;
+		initYSpeed = ySpeed;
+		initXPos = transform.position.x;
+		initYPos = transform.position.y;
     }
 
     private void Update()
@@ -77,9 +89,22 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 	
-	void TaskOnClick()
+	void StartWalking()
 	{
 		walking = true;
+		startButton.GetComponent<Button>().interactable = false;
+	}
+	
+	void Restart()
+	{
+		walking = false;
+		falling = false;
+		xSpeed = initXSpeed;
+		ySpeed = initYSpeed;
+		bridgeCounter = 0;
+		startButton.GetComponent<Button>().interactable = true;
+		restartButton.SetActive(false);
+		transform.position = new Vector2(initXPos, initYPos);
 	}
 	
 	public void FallDown()
@@ -92,6 +117,7 @@ public class CharacterController2D : MonoBehaviour
 		walking = false;
 		falling = true;
 		velocity = new Vector2(0f, -1f);
+		restartButton.SetActive(true);
 	}
 	
 	public void ChangeBridgeCounter(int value)

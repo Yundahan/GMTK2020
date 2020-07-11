@@ -347,6 +347,11 @@ public class CharacterController2D : MonoBehaviour
 		return bridgeCounter;
 	}
 	
+	public bool GetWalking()
+	{
+		return walking;
+	}
+	
 	public void Turn(float value)
 	{
 		float tempx = xSpeed;

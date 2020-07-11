@@ -75,7 +75,7 @@ public class Placement : MonoBehaviour
 			switch(currentObject)
 			{
 				case ObjectType.Bridge:
-					if(charController.GetBridgeCounter() > 0)
+					if(charController.GetBridgeCounter() > 0 && charController.GetWalking())
 					{
 						return;
 					}

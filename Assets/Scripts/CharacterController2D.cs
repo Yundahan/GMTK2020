@@ -8,6 +8,9 @@ public class CharacterController2D : MonoBehaviour
 {
     [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
     float speed = 5f;
+	
+	public const int maxCollisions = 5;
+	private int collisionCount = 0;
 
     //[SerializeField, Tooltip("Acceleration while grounded.")]
     //float walkAcceleration = 75;
@@ -34,6 +37,7 @@ public class CharacterController2D : MonoBehaviour
 	
 	private bool walking = false;
 	private bool falling = false;
+	private bool dead = false;
 	
 	private int bridgeCounter = 0;
 	
@@ -44,6 +48,8 @@ public class CharacterController2D : MonoBehaviour
 	private float initYPos;
 	private float initXSpeed;
 	private float initYSpeed;
+	
+	public Sprite deadSprite;
 	
 	public AudioSource MainThemePiano;
 	public AudioSource MainThemeOrchestra;
@@ -85,11 +91,27 @@ public class CharacterController2D : MonoBehaviour
 		{
 			return;
 		}
-		else if(!walking)
+		
+		if(dead)
+		{
+			return;
+		}
+		
+		if(!walking)
 		{
 			transform.Translate(velocity * Time.deltaTime);
 			velocity.y -= 1f;
 			return;
+		}
+		
+		if(collisionCount >= maxCollisions)
+		{
+			dead = true;
+			velocity = new Vector2(0f, 0f);
+			xSpeed = 0f;
+			ySpeed = 0f;
+			GetComponent<Animator>().enabled = false;
+			GetComponent<SpriteRenderer>().sprite = deadSprite;
 		}
 		
 		transform.Translate(velocity * Time.deltaTime);
@@ -116,6 +138,7 @@ public class CharacterController2D : MonoBehaviour
 			animator.SetFloat("xSpeed", xSpeed);
 			animator.SetFloat("ySpeed", ySpeed);
 			angularWall.SendMessage("ResetTurned", gameObject);
+			collisionCount++;
 		}
 		
 		if(col.gameObject == orangePortal)
@@ -229,6 +252,7 @@ public class CharacterController2D : MonoBehaviour
 		restartButton.SetActive(false);
 		transform.position = new Vector2(initXPos, initYPos);
 		velocity = new Vector2(0f, 0f);
+		GetComponent<Animator>().enabled = true;
 		MainThemeOrchestra.Play();
 		MainThemeOrchestra.volume = 0;
 		MainThemePiano.Play();
@@ -269,5 +293,6 @@ public class CharacterController2D : MonoBehaviour
 		ySpeed = tempx * value;
 		animator.SetFloat("xSpeed", xSpeed);
 		animator.SetFloat("ySpeed", ySpeed);
+		collisionCount++;
 	}
 }

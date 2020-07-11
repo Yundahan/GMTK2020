@@ -105,6 +105,7 @@ public class CharacterController2D : MonoBehaviour
 		startButton.GetComponent<Button>().interactable = true;
 		restartButton.SetActive(false);
 		transform.position = new Vector2(initXPos, initYPos);
+		velocity = new Vector2(0f, 0f);
 	}
 	
 	public void FallDown()

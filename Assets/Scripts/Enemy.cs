@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
 	public GameObject bluePortal;  //Blue on left wall facing right is default
 	
     private BoxCollider2D boxCollider;
-	private Animator animator;
 	private Rigidbody2D rigidbody;
 	
 	public GameObject angularWall;
@@ -36,18 +35,13 @@ public class Enemy : MonoBehaviour
 	private bool falling = false;
 	private bool dead = false;
 	
-	private int bridgeCounter = 0;
-	
 	public float xSpeed;
 	public float ySpeed;
 	
-	public float initXPos;
-	public float initYPos;
-	public float initXSpeed;
-	public float initYSpeed;
-	
-	public Sprite deadSprite;
-	
+	private float initXPos;
+	private float initYPos;
+	private float initXSpeed;
+	private float initYSpeed;
 	
 	private Vector3 defaultRotation = new Vector3(0,0,0f);
 	private Vector3 quarterRotationClockwise = new Vector3(0,0,270f);
@@ -58,8 +52,6 @@ public class Enemy : MonoBehaviour
     {      
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-		animator.enabled = false;
 		bluePortalCollider = bluePortal.GetComponent<BoxCollider2D>();
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
@@ -71,9 +63,6 @@ public class Enemy : MonoBehaviour
 		initYSpeed = ySpeed;
 		initXPos = transform.position.x;
 		initYPos = transform.position.y;
-		
-		
-
     }
 
     private void Update()
@@ -119,7 +108,7 @@ public class Enemy : MonoBehaviour
 		
 		if(col.gameObject == orangePortal)
 		{
-			Debug.Log("Ich hab ein Portal gefunden");
+			//Debug.Log("Ich hab ein Portal gefunden");
 			Vector2 bluePortalPosition = new Vector2(0,0);
 			bluePortalPosition = bluePortal.transform.position;
 			Vector3 relativePortalPosition = new Vector3(0,0,0);
@@ -151,25 +140,21 @@ public class Enemy : MonoBehaviour
 
 			if((Mathf.Abs(relativePortalPosition.z - defaultRotation.z) >0.01f))
 			{
-				Debug.Log(relativePortalPosition+ " OrangeIn");	
+				//Debug.Log(relativePortalPosition+ " OrangeIn");	
 				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
 				{
 					float newVerticalMovement = (-1f*xSpeed);
 					float newHorizontalMovement =  (1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
-					animator.SetFloat("xSpeed", newHorizontalMovement);
-					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("QuarterRotationBlueOut");
+					//Debug.Log("QuarterRotationBlueOut");
 					
 				}
 				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
 				{
 					xSpeed *= -1f;
 					ySpeed *= -1f;
-					animator.SetFloat("xSpeed", xSpeed);
-					animator.SetFloat("ySpeed", ySpeed);
-					Debug.Log("HalfRotationBlueOut");
+					//Debug.Log("HalfRotationBlueOut");
 				}
 				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
 				{
@@ -177,9 +162,7 @@ public class Enemy : MonoBehaviour
 					float newHorizontalMovement =  (-1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
-					animator.SetFloat("xSpeed", newHorizontalMovement);
-					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("ThreeQuarterRotationBlueOut");
+					//Debug.Log("ThreeQuarterRotationBlueOut");
 				}
 				
 			}
@@ -217,29 +200,25 @@ public class Enemy : MonoBehaviour
 			{	
 				Vector2 portalPush = new Vector2 (0,-2f);
 				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
-				Debug.Log("ThreeQuarterPortalPush");
+				//Debug.Log("ThreeQuarterPortalPush");
 			}	
 			
 			if(relativePortalPosition != defaultRotation)
 			{
-				Debug.Log(relativePortalPosition + " BlueIn");	
+				//Debug.Log(relativePortalPosition + " BlueIn");	
 				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
 				{
 					float newVerticalMovement = (1f*xSpeed);
 					float newHorizontalMovement =  (-1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
-					animator.SetFloat("xSpeed", newHorizontalMovement);
-					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("QuarterRotationOrangeOut");
+					//Debug.Log("QuarterRotationOrangeOut");
 				}
 				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
 				{
 					xSpeed *= -1f;
 					ySpeed *= -1f;
-					animator.SetFloat("xSpeed", xSpeed);
-					animator.SetFloat("ySpeed", ySpeed);
-					Debug.Log("HalfRotationOrangeOut");
+					//Debug.Log("HalfRotationOrangeOut");
 				}
 				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
 				{
@@ -247,9 +226,7 @@ public class Enemy : MonoBehaviour
 					float newHorizontalMovement =  (1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
-					animator.SetFloat("xSpeed", newHorizontalMovement);
-					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("ThreeQuarterRotationOrangeOut");
+					//Debug.Log("ThreeQuarterRotationOrangeOut");
 				}
 				
 			}
@@ -258,7 +235,6 @@ public class Enemy : MonoBehaviour
 	
 	void StartWalking()
 	{
-		animator.enabled = true;
 		walking = true;
 	}
 	
@@ -268,23 +244,16 @@ public class Enemy : MonoBehaviour
 		falling = false;
 		xSpeed = initXSpeed;
 		ySpeed = initYSpeed;
-		bridgeCounter = 0;
 		startButton.GetComponent<Button>().interactable = true;
 		restartButton.SetActive(false);
 		transform.position = new Vector2(initXPos, initYPos);
 		velocity = new Vector2(0f, 0f);
-		GetComponent<Animator>().enabled = true;
 	}
-	
-	
-	
 	
 	public void Turn(float value)
 	{
 		float tempx = xSpeed;
 		xSpeed = ySpeed * value;
 		ySpeed = tempx * value;
-		animator.SetFloat("xSpeed", xSpeed);
-		animator.SetFloat("ySpeed", ySpeed);
 	}
 }

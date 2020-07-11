@@ -6,15 +6,18 @@ public class AngularWall : MonoBehaviour
 {
 	public PolygonCollider2D polygonCollider;
 	
-	private bool alreadyTurned = false;
+	HashSet<GameObject> alreadyTurned;
 	
-	private bool ignoreX = false;
-	private bool ignoreY = false;
+	HashSet<GameObject> ignoreX;
+	HashSet<GameObject> ignoreY;
 	
     // Start is called before the first frame update
     void Start()
     {
         polygonCollider = GetComponent<PolygonCollider2D>();
+		ignoreX = new HashSet<GameObject>();
+		ignoreY = new HashSet<GameObject>();
+		alreadyTurned = new HashSet<GameObject>();
     }
 
     // Update is called once per frame
@@ -25,41 +28,41 @@ public class AngularWall : MonoBehaviour
 	
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		if(col.gameObject.name == "Sleepyboi")
+		if(col.gameObject.name == "Sleepyboi" || col.gameObject.name == "Ghost")
 		{
 			float distX = Mathf.Abs(col.gameObject.transform.position.x - transform.position.x);
 			float distY = Mathf.Abs(col.gameObject.transform.position.y - transform.position.y);
 			
 			if(distX <= 0.1f)
 			{
-				ignoreX = true;
+				ignoreX.Add(col.gameObject);
 			}
 			else if(distY <= 0.1f)
 			{
-				ignoreY = true;
+				ignoreY.Add(col.gameObject);
 			}
 		}
 	}
 	
 	void OnTriggerStay2D(Collider2D col)
 	{
-		if(alreadyTurned)
+		if(alreadyTurned.Contains(col.gameObject))
 		{
 			return;
 		}
 		
-		if(col.gameObject.name == "Sleepyboi")
+		if(col.gameObject.name == "Sleepyboi" || col.gameObject.name == "Ghost")
 		{
 			float distX = Mathf.Abs(col.gameObject.transform.position.x - transform.position.x);
 			float distY = Mathf.Abs(col.gameObject.transform.position.y - transform.position.y);
 			
-			if(distX > 0.1f && distY > 0.1f || distX > 0.1f && ignoreY || distY > 0.1f && ignoreX)
+			if(distX > 0.1f && distY > 0.1f || distX > 0.1f && ignoreY.Contains(col.gameObject) || distY > 0.1f && ignoreX.Contains(col.gameObject))
 			{
 				return;
 			}
 			
 			float rotation = Mathf.Round(transform.rotation.eulerAngles.z);
-			alreadyTurned = true;
+			alreadyTurned.Add(col.gameObject);
 			
 			if(rotation == 0 || rotation == 180)
 			{
@@ -70,14 +73,14 @@ public class AngularWall : MonoBehaviour
 				col.gameObject.SendMessage("Turn", 1f);
 			}
 			
-			ignoreX = false;
-			ignoreY = false;
+			ignoreX.Remove(col.gameObject);
+			ignoreY.Remove(col.gameObject);
 		}
 	}
 	
 	void OnTriggerExit2D(Collider2D col)
 	{
-		if(col.gameObject.name == "Sleepyboi")
+		if(col.gameObject.name == "Sleepyboi" || col.gameObject.name == "Enemy")
 		{
 			ResetTurned(col.gameObject);
 		}
@@ -85,23 +88,23 @@ public class AngularWall : MonoBehaviour
 	
 	void ResetTurned(GameObject go)
 	{
-		alreadyTurned = false;
+		alreadyTurned.Remove(go);
 		float distX = Mathf.Abs(go.transform.position.x - transform.position.x);
 		float distY = Mathf.Abs(go.transform.position.y - transform.position.y);
 		
 		if(distX <= 0.1f)
 		{
-			ignoreX = true;
+			ignoreX.Add(go);
 		}
 		else if(distY <= 0.1f)
 		{
-			ignoreY = true;
+			ignoreY.Add(go);
 		}
 		
 		if(distX <= 0.1f && distY <= 0.1f)
 		{
-			ignoreX = false;
-			ignoreY = false;
+			ignoreX.Remove(go);
+			ignoreY.Remove(go);
 		}
 	}
 }

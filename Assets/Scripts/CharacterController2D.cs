@@ -112,8 +112,6 @@ public class CharacterController2D : MonoBehaviour
 			velocity = new Vector2(0f, 0f);
 			xSpeed = 0f;
 			ySpeed = 0f;
-			animator.enabled = false;
-			GetComponent<SpriteRenderer>().sprite = deadSprite;
 			WakeUp();
 		}
 		
@@ -330,7 +328,8 @@ public class CharacterController2D : MonoBehaviour
 		MainThemeOrchestra.Stop();
 		DeathTheme.Play();
 		DeathTheme.volume = 0.3f;
-		
+		animator.enabled = false;
+		GetComponent<SpriteRenderer>().sprite = deadSprite;
 	}	
 	
 	public void ChangeBridgeCounter(int value)

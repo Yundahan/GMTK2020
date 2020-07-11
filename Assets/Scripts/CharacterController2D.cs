@@ -23,7 +23,6 @@ public class CharacterController2D : MonoBehaviour
 	public GameObject orangePortal; //Orange on right wall facing left is default
 	public GameObject bluePortal;  //Blue on left wall facing right is default
 	
-	
     private BoxCollider2D boxCollider;
 	private Animator animator;
 	private Rigidbody2D rigidbody;

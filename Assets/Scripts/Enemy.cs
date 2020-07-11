@@ -4,13 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class EnemyLeftRight : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
-	[SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
-    float speed = 5f;
+    [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
+    public float speed;
 	
-	public const int maxCollisions = 5;
-	private int collisionCount = 0;
 
     //[SerializeField, Tooltip("Acceleration while grounded.")]
     //float walkAcceleration = 75;
@@ -22,7 +20,6 @@ public class EnemyLeftRight : MonoBehaviour
 	public GameObject ground;
 	public GameObject orangePortal; //Orange on right wall facing left is default
 	public GameObject bluePortal;  //Blue on left wall facing right is default
-	
 	
     private BoxCollider2D boxCollider;
 	private Animator animator;
@@ -41,27 +38,28 @@ public class EnemyLeftRight : MonoBehaviour
 	
 	private int bridgeCounter = 0;
 	
-	private float xSpeed = 1f;
-	private float ySpeed = 0f;
+	public float xSpeed;
+	public float ySpeed;
 	
-	private float initXPos;
-	private float initYPos;
-	private float initXSpeed;
-	private float initYSpeed;
+	public float initXPos;
+	public float initYPos;
+	public float initXSpeed;
+	public float initYSpeed;
 	
 	public Sprite deadSprite;
 	
 	
-	private Vector3 defaultRotation = new Vector3(0,0,0);
-	private Vector3 quarterRotationClockwise = new Vector3(0,0,270);
-	private Vector3 halfRotation = new Vector3 (0,0,180);
-	private Vector3 threeQuarterRotationClockwise = new Vector3(0,0,90);
+	private Vector3 defaultRotation = new Vector3(0,0,0f);
+	private Vector3 quarterRotationClockwise = new Vector3(0,0,270f);
+	private Vector3 halfRotation = new Vector3 (0,0,180f);
+	private Vector3 threeQuarterRotationClockwise = new Vector3(0,0,90f);
 	
 	private void Awake()
     {      
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+		animator.enabled = false;
 		bluePortalCollider = bluePortal.GetComponent<BoxCollider2D>();
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
@@ -74,7 +72,6 @@ public class EnemyLeftRight : MonoBehaviour
 		initXPos = transform.position.x;
 		initYPos = transform.position.y;
 		
-
 		
 
     }
@@ -98,15 +95,6 @@ public class EnemyLeftRight : MonoBehaviour
 			return;
 		}
 		
-		if(collisionCount >= maxCollisions)
-		{
-			dead = true;
-			velocity = new Vector2(0f, 0f);
-			xSpeed = 0f;
-			ySpeed = 0f;
-			GetComponent<Animator>().enabled = false;
-			GetComponent<SpriteRenderer>().sprite = deadSprite;
-		}
 		
 		transform.Translate(velocity * Time.deltaTime);
 		velocity.x = speed * xSpeed;
@@ -118,9 +106,6 @@ public class EnemyLeftRight : MonoBehaviour
 		float moveInputVertical = Input.GetAxisRaw("Vertical");
 		velocity.y = Mathf.MoveTowards(velocity.y, speed * moveInputVertical, walkAcceleration * Time.deltaTime);
 		*/
-		
-		
-			
     }
 	
 	void OnTriggerEnter2D(Collider2D col)
@@ -129,52 +114,72 @@ public class EnemyLeftRight : MonoBehaviour
 		{
 			xSpeed *= -1f;
 			ySpeed *= -1f;
-			animator.SetFloat("xSpeed", xSpeed);
-			animator.SetFloat("ySpeed", ySpeed);
 			angularWall.SendMessage("ResetTurned", gameObject);
-			collisionCount++;
 		}
 		
 		if(col.gameObject == orangePortal)
 		{
-			
+			Debug.Log("Ich hab ein Portal gefunden");
 			Vector2 bluePortalPosition = new Vector2(0,0);
 			bluePortalPosition = bluePortal.transform.position;
-			transform.position = (bluePortalCollider.offset + bluePortalPosition) ;
 			Vector3 relativePortalPosition = new Vector3(0,0,0);
-			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles + orangePortal.transform.rotation.eulerAngles);
-				if (relativePortalPosition.z >=360f)
+			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles - orangePortal.transform.rotation.eulerAngles);
+				if (relativePortalPosition.z<0)
 				{
-						relativePortalPosition.z = (relativePortalPosition.z - 360f);
+						relativePortalPosition.z = (relativePortalPosition.z + 360f);
 				}	
-			
-			
-			if(relativePortalPosition != defaultRotation)
+			if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -defaultRotation.z) <0.01f)
 			{
-				if(relativePortalPosition == quarterRotationClockwise)
+				Vector2 portalPush = new Vector2 (2f,0);
+				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
+			}
+			else if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -quarterRotationClockwise.z) <0.01f)
+			{	
+				Vector2 portalPush = new Vector2 (0,-2f);
+				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
+			}
+			else if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -halfRotation.z) <0.01f)
+			{	
+				Vector2 portalPush = new Vector2 (-2f,0);
+				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
+			}
+			else if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -threeQuarterRotationClockwise.z) <0.01f)
+			{	
+				Vector2 portalPush = new Vector2 (0,2f);
+				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
+			}
+
+			if((Mathf.Abs(relativePortalPosition.z - defaultRotation.z) >0.01f))
+			{
+				Debug.Log(relativePortalPosition+ " OrangeIn");	
+				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
 				{
 					float newVerticalMovement = (-1f*xSpeed);
-					float newHorizontalMovement =  ySpeed;
+					float newHorizontalMovement =  (1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
+					Debug.Log("QuarterRotationBlueOut");
+					
 				}
-				if(relativePortalPosition == halfRotation)
+				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
 				{
 					xSpeed *= -1f;
 					ySpeed *= -1f;
 					animator.SetFloat("xSpeed", xSpeed);
 					animator.SetFloat("ySpeed", ySpeed);
+					Debug.Log("HalfRotationBlueOut");
 				}
-				if(relativePortalPosition == threeQuarterRotationClockwise)
+				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
 				{
-					float newVerticalMovement = (xSpeed);
+					float newVerticalMovement = (1f*xSpeed);
 					float newHorizontalMovement =  (-1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
+					Debug.Log("ThreeQuarterRotationBlueOut");
 				}
 				
 			}
@@ -184,41 +189,67 @@ public class EnemyLeftRight : MonoBehaviour
 			
 			Vector2 orangePortalPosition = new Vector2(0,0);
 			orangePortalPosition = orangePortal.transform.position;
-			transform.position = (orangePortalCollider.offset + orangePortalPosition);
+
 			
 			Vector3 relativePortalPosition = new Vector3(0,0,0);
-			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles + orangePortal.transform.rotation.eulerAngles);
-				if (relativePortalPosition.z >=360f)
+			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles - orangePortal.transform.rotation.eulerAngles);
+				if (relativePortalPosition.z <0)
 				{
-						relativePortalPosition.z = (relativePortalPosition.z - 360f);
-				}	
+						relativePortalPosition.z = (relativePortalPosition.z + 360f);
+				}
+	
+			if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - defaultRotation.z) <0.01f)
+			{
+				Vector2 portalPush = new Vector2 (-2f,0);
+				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
+			}
+			else if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - quarterRotationClockwise.z) <0.01f)
+			{	
+				Vector2 portalPush = new Vector2 (0,2f);
+				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
+			}
+			else if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - halfRotation.z) <0.01f)
+			{	
+				Vector2 portalPush = new Vector2 (2f,0);
+				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
+			}
+			else if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - threeQuarterRotationClockwise.z) <0.01f)
+			{	
+				Vector2 portalPush = new Vector2 (0,-2f);
+				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
+				Debug.Log("ThreeQuarterPortalPush");
+			}	
 			
 			if(relativePortalPosition != defaultRotation)
 			{
-				if(relativePortalPosition == quarterRotationClockwise)
+				Debug.Log(relativePortalPosition + " BlueIn");	
+				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
 				{
-					float newVerticalMovement = (xSpeed);
+					float newVerticalMovement = (1f*xSpeed);
 					float newHorizontalMovement =  (-1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
+					Debug.Log("QuarterRotationOrangeOut");
 				}
-				if(relativePortalPosition == halfRotation)
+				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
 				{
 					xSpeed *= -1f;
 					ySpeed *= -1f;
 					animator.SetFloat("xSpeed", xSpeed);
 					animator.SetFloat("ySpeed", ySpeed);
+					Debug.Log("HalfRotationOrangeOut");
 				}
-				if(relativePortalPosition == threeQuarterRotationClockwise)
+				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
 				{
 					float newVerticalMovement = (-1f*xSpeed);
-					float newHorizontalMovement =  ySpeed;
+					float newHorizontalMovement =  (1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
+					Debug.Log("ThreeQuarterRotationOrangeOut");
 				}
 				
 			}
@@ -227,10 +258,8 @@ public class EnemyLeftRight : MonoBehaviour
 	
 	void StartWalking()
 	{
+		animator.enabled = true;
 		walking = true;
-		startButton.GetComponent<Button>().interactable = false;
-		
-		
 	}
 	
 	void Restart()
@@ -247,28 +276,8 @@ public class EnemyLeftRight : MonoBehaviour
 		GetComponent<Animator>().enabled = true;
 	}
 	
-	public void FallDown()
-	{
-		if(bridgeCounter > 0)
-		{
-			return;
-		}
-		
-		walking = false;
-		falling = true;
-		velocity = new Vector2(0f, -1f);
-		restartButton.SetActive(true);
-	}
 	
-	public void ChangeBridgeCounter(int value)
-	{
-		bridgeCounter += value;
-	}
 	
-	public int GetBridgeCounter()
-	{
-		return bridgeCounter;
-	}
 	
 	public void Turn(float value)
 	{
@@ -277,6 +286,5 @@ public class EnemyLeftRight : MonoBehaviour
 		ySpeed = tempx * value;
 		animator.SetFloat("xSpeed", xSpeed);
 		animator.SetFloat("ySpeed", ySpeed);
-		collisionCount++;
 	}
 }

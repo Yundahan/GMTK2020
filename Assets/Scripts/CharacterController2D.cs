@@ -114,6 +114,7 @@ public class CharacterController2D : MonoBehaviour
 			ySpeed = 0f;
 			animator.enabled = false;
 			GetComponent<SpriteRenderer>().sprite = deadSprite;
+			WakeUp();
 		}
 		
 		transform.Translate(velocity * Time.deltaTime);
@@ -319,12 +320,18 @@ public class CharacterController2D : MonoBehaviour
 		walking = false;
 		falling = true;
 		velocity = new Vector2(0f, -1f);
+		WakeUp();
+	}
+	
+	public void WakeUp()
+	{
 		restartButton.SetActive(true);
 		MainThemePiano.Stop();
 		MainThemeOrchestra.Stop();
 		DeathTheme.Play();
 		DeathTheme.volume = 0.3f;
-	}
+		
+	}	
 	
 	public void ChangeBridgeCounter(int value)
 	{

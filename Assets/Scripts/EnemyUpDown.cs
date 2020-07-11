@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class CharacterController2D : MonoBehaviour
+public class EnemyUpDown : MonoBehaviour
 {
-    [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
+	[SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
     float speed = 5f;
 	
 	public const int maxCollisions = 5;
@@ -41,8 +41,8 @@ public class CharacterController2D : MonoBehaviour
 	
 	private int bridgeCounter = 0;
 	
-	private float xSpeed = 1f;
-	private float ySpeed = 0f;
+	private float xSpeed = 0f;
+	private float ySpeed = 1f;
 	
 	private float initXPos;
 	private float initYPos;
@@ -51,14 +51,11 @@ public class CharacterController2D : MonoBehaviour
 	
 	public Sprite deadSprite;
 	
-	public AudioSource MainThemePiano;
-	public AudioSource MainThemeOrchestra;
-	public AudioSource DeathTheme ;
 	
-	private Vector3 defaultRotation = new Vector3(0,0,0f);
-	private Vector3 quarterRotationClockwise = new Vector3(0,0,270f);
-	private Vector3 halfRotation = new Vector3 (0,0,180f);
-	private Vector3 threeQuarterRotationClockwise = new Vector3(0,0,90f);
+	private Vector3 defaultRotation = new Vector3(0,0,0);
+	private Vector3 quarterRotationClockwise = new Vector3(0,0,270);
+	private Vector3 halfRotation = new Vector3 (0,0,180);
+	private Vector3 threeQuarterRotationClockwise = new Vector3(0,0,90);
 	
 	private void Awake()
     {      
@@ -77,10 +74,7 @@ public class CharacterController2D : MonoBehaviour
 		initXPos = transform.position.x;
 		initYPos = transform.position.y;
 		
-		MainThemeOrchestra.Play();
-		MainThemePiano.Play();
-		MainThemeOrchestra.volume = 0f;
-		MainThemePiano.volume = 1f;
+
 		
 
     }
@@ -146,64 +140,41 @@ public class CharacterController2D : MonoBehaviour
 			
 			Vector2 bluePortalPosition = new Vector2(0,0);
 			bluePortalPosition = bluePortal.transform.position;
+			transform.position = (bluePortalCollider.offset + bluePortalPosition) ;
 			Vector3 relativePortalPosition = new Vector3(0,0,0);
-			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles - orangePortal.transform.rotation.eulerAngles);
-				if (relativePortalPosition.z<0)
+			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles + orangePortal.transform.rotation.eulerAngles);
+				if (relativePortalPosition.z >=360f)
 				{
-						relativePortalPosition.z = (relativePortalPosition.z + 360f);
+						relativePortalPosition.z = (relativePortalPosition.z - 360f);
 				}	
-			if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -defaultRotation.z) <0.01f)
+			
+			
+			if(relativePortalPosition != defaultRotation)
 			{
-				Vector2 portalPush = new Vector2 (2f,0);
-				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
-			}
-			else if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -quarterRotationClockwise.z) <0.01f)
-			{	
-				Vector2 portalPush = new Vector2 (0,-2f);
-				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
-			}
-			else if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -halfRotation.z) <0.01f)
-			{	
-				Vector2 portalPush = new Vector2 (-2f,0);
-				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
-			}
-			else if (Mathf.Abs(bluePortal.transform.rotation.eulerAngles.z -threeQuarterRotationClockwise.z) <0.01f)
-			{	
-				Vector2 portalPush = new Vector2 (0,2f);
-				transform.position = (bluePortalCollider.offset + bluePortalPosition + portalPush);
-			}
-
-			if((Mathf.Abs(relativePortalPosition.z - defaultRotation.z) >0.01f))
-			{
-				Debug.Log(relativePortalPosition+ " OrangeIn");	
-				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
+				if(relativePortalPosition == quarterRotationClockwise)
 				{
 					float newVerticalMovement = (-1f*xSpeed);
-					float newHorizontalMovement =  (1f*ySpeed);
+					float newHorizontalMovement =  ySpeed;
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("QuarterRotationBlueOut");
-					
 				}
-				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
+				if(relativePortalPosition == halfRotation)
 				{
 					xSpeed *= -1f;
 					ySpeed *= -1f;
 					animator.SetFloat("xSpeed", xSpeed);
 					animator.SetFloat("ySpeed", ySpeed);
-					Debug.Log("HalfRotationBlueOut");
 				}
-				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
+				if(relativePortalPosition == threeQuarterRotationClockwise)
 				{
-					float newVerticalMovement = (1f*xSpeed);
+					float newVerticalMovement = (xSpeed);
 					float newHorizontalMovement =  (-1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("ThreeQuarterRotationBlueOut");
 				}
 				
 			}
@@ -213,67 +184,41 @@ public class CharacterController2D : MonoBehaviour
 			
 			Vector2 orangePortalPosition = new Vector2(0,0);
 			orangePortalPosition = orangePortal.transform.position;
-
+			transform.position = (orangePortalCollider.offset + orangePortalPosition);
 			
 			Vector3 relativePortalPosition = new Vector3(0,0,0);
-			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles - orangePortal.transform.rotation.eulerAngles);
-				if (relativePortalPosition.z <0)
+			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles + orangePortal.transform.rotation.eulerAngles);
+				if (relativePortalPosition.z >=360f)
 				{
-						relativePortalPosition.z = (relativePortalPosition.z + 360f);
-				}
-	
-			if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - defaultRotation.z) <0.01f)
-			{
-				Vector2 portalPush = new Vector2 (-2f,0);
-				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
-			}
-			else if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - quarterRotationClockwise.z) <0.01f)
-			{	
-				Vector2 portalPush = new Vector2 (0,2f);
-				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
-			}
-			else if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - halfRotation.z) <0.01f)
-			{	
-				Vector2 portalPush = new Vector2 (2f,0);
-				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
-			}
-			else if (Mathf.Abs(orangePortal.transform.rotation.eulerAngles.z - threeQuarterRotationClockwise.z) <0.01f)
-			{	
-				Vector2 portalPush = new Vector2 (0,-2f);
-				transform.position = (orangePortalCollider.offset + orangePortalPosition + portalPush);
-				Debug.Log("ThreeQuarterPortalPush");
-			}	
+						relativePortalPosition.z = (relativePortalPosition.z - 360f);
+				}	
 			
 			if(relativePortalPosition != defaultRotation)
 			{
-				Debug.Log(relativePortalPosition + " BlueIn");	
-				if(Mathf.Abs(relativePortalPosition.z - quarterRotationClockwise.z) <0.01f)
+				if(relativePortalPosition == quarterRotationClockwise)
 				{
-					float newVerticalMovement = (1f*xSpeed);
+					float newVerticalMovement = (xSpeed);
 					float newHorizontalMovement =  (-1f*ySpeed);
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("QuarterRotationOrangeOut");
 				}
-				if(Mathf.Abs(relativePortalPosition.z - halfRotation.z) <0.01f)
+				if(relativePortalPosition == halfRotation)
 				{
 					xSpeed *= -1f;
 					ySpeed *= -1f;
 					animator.SetFloat("xSpeed", xSpeed);
 					animator.SetFloat("ySpeed", ySpeed);
-					Debug.Log("HalfRotationOrangeOut");
 				}
-				if(Mathf.Abs(relativePortalPosition.z - threeQuarterRotationClockwise.z) <0.01f)
+				if(relativePortalPosition == threeQuarterRotationClockwise)
 				{
 					float newVerticalMovement = (-1f*xSpeed);
-					float newHorizontalMovement =  (1f*ySpeed);
+					float newHorizontalMovement =  ySpeed;
 					xSpeed = newHorizontalMovement;
 					ySpeed = newVerticalMovement;
 					animator.SetFloat("xSpeed", newHorizontalMovement);
 					animator.SetFloat("ySpeed", newVerticalMovement);
-					Debug.Log("ThreeQuarterRotationOrangeOut");
 				}
 				
 			}
@@ -284,8 +229,6 @@ public class CharacterController2D : MonoBehaviour
 	{
 		walking = true;
 		startButton.GetComponent<Button>().interactable = false;
-		MainThemePiano.volume = 0;
-		MainThemeOrchestra.volume = 0.75f;
 		
 		
 	}
@@ -302,10 +245,6 @@ public class CharacterController2D : MonoBehaviour
 		transform.position = new Vector2(initXPos, initYPos);
 		velocity = new Vector2(0f, 0f);
 		GetComponent<Animator>().enabled = true;
-		MainThemeOrchestra.Play();
-		MainThemeOrchestra.volume = 0;
-		MainThemePiano.Play();
-		MainThemePiano.volume = 1f;
 	}
 	
 	public void FallDown()
@@ -319,10 +258,6 @@ public class CharacterController2D : MonoBehaviour
 		falling = true;
 		velocity = new Vector2(0f, -1f);
 		restartButton.SetActive(true);
-		MainThemePiano.Stop();
-		MainThemeOrchestra.Stop();
-		DeathTheme.Play();
-		DeathTheme.volume = 0.3f;
 	}
 	
 	public void ChangeBridgeCounter(int value)

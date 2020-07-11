@@ -101,6 +101,11 @@ public class Placement : MonoBehaviour
 					Vector3 direction = newPos - point;
 					float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 					angle = Mathf.Round(angle / 90) * 90;
+					if (angle < 0)
+					{
+						angle += 360;
+						
+					}
 					bluePortal.transform.position = point;
 					bluePortal.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
 					break;

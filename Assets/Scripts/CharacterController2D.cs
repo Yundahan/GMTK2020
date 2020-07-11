@@ -25,6 +25,8 @@ public class CharacterController2D : MonoBehaviour
 	private Animator animator;
 	private Rigidbody2D rigidbody;
 	
+	public GameObject angularWall;
+	
 	private BoxCollider2D bluePortalCollider;
 	private BoxCollider2D orangePortalCollider;
 
@@ -113,6 +115,7 @@ public class CharacterController2D : MonoBehaviour
 			ySpeed *= -1f;
 			animator.SetFloat("xSpeed", xSpeed);
 			animator.SetFloat("ySpeed", ySpeed);
+			angularWall.SendMessage("ResetTurned");
 		}
 		
 		if(col.gameObject == orangePortal)

@@ -17,10 +17,16 @@ public class CharacterController2D : MonoBehaviour
 	
 	public GameObject wall;
 	public GameObject ground;
+	public GameObject orangePortal; //Orange on right wall facing left is default
+	public GameObject bluePortal;  //Blue on left wall facing right is default
+	
 	
     private BoxCollider2D boxCollider;
 	private Animator animator;
 	private Rigidbody2D rigidbody;
+	
+	private BoxCollider2D bluePortalCollider;
+	private BoxCollider2D orangePortalCollider;
 
     private Vector2 velocity;
 	
@@ -41,11 +47,18 @@ public class CharacterController2D : MonoBehaviour
 	public AudioSource MainThemeOrchestra;
 	public AudioSource DeathTheme ;
 	
+	private Vector3 defaultRotation = new Vector3(0,0,0);
+	private Vector3 quarterRotationClockwise = new Vector3(0,0,270);
+	private Vector3 halfRotation = new Vector3 (0,0,180);
+	private Vector3 threeQuarterRotationClockwise = new Vector3(0,0,90);
+	
 	private void Awake()
     {      
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+		bluePortalCollider = bluePortal.GetComponent<BoxCollider2D>();
+		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
 		rigidbody.isKinematic = true;
         startButton.GetComponent<Button>().onClick.AddListener(StartWalking);
@@ -100,6 +113,95 @@ public class CharacterController2D : MonoBehaviour
 			ySpeed *= -1f;
 			animator.SetFloat("xSpeed", xSpeed);
 			animator.SetFloat("ySpeed", ySpeed);
+		}
+		
+		if(col.gameObject == orangePortal)
+		{
+			
+			Vector2 bluePortalPosition = new Vector2(0,0);
+			bluePortalPosition = bluePortal.transform.position;
+			transform.position = (bluePortalCollider.offset + bluePortalPosition) ;
+			Vector3 relativePortalPosition = new Vector3(0,0,0);
+			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles + orangePortal.transform.rotation.eulerAngles);
+				if (relativePortalPosition.z >=360f)
+				{
+						relativePortalPosition.z = (relativePortalPosition.z - 360f);
+				}	
+			
+			
+			if(relativePortalPosition != defaultRotation)
+			{
+				if(relativePortalPosition == quarterRotationClockwise)
+				{
+					float newVerticalMovement = (-1f*xSpeed);
+					float newHorizontalMovement =  ySpeed;
+					xSpeed = newHorizontalMovement;
+					ySpeed = newVerticalMovement;
+					animator.SetFloat("xSpeed", newHorizontalMovement);
+					animator.SetFloat("ySpeed", newVerticalMovement);
+				}
+				if(relativePortalPosition == halfRotation)
+				{
+					xSpeed *= -1f;
+					ySpeed *= -1f;
+					animator.SetFloat("xSpeed", xSpeed);
+					animator.SetFloat("ySpeed", ySpeed);
+				}
+				if(relativePortalPosition == threeQuarterRotationClockwise)
+				{
+					float newVerticalMovement = (xSpeed);
+					float newHorizontalMovement =  (-1f*ySpeed);
+					xSpeed = newHorizontalMovement;
+					ySpeed = newVerticalMovement;
+					animator.SetFloat("xSpeed", newHorizontalMovement);
+					animator.SetFloat("ySpeed", newVerticalMovement);
+				}
+				
+			}
+		}
+		if(col.gameObject == bluePortal)
+		{
+			
+			Vector2 orangePortalPosition = new Vector2(0,0);
+			orangePortalPosition = orangePortal.transform.position;
+			transform.position = (orangePortalCollider.offset + orangePortalPosition);
+			
+			Vector3 relativePortalPosition = new Vector3(0,0,0);
+			relativePortalPosition = (bluePortal.transform.rotation.eulerAngles + orangePortal.transform.rotation.eulerAngles);
+				if (relativePortalPosition.z >=360f)
+				{
+						relativePortalPosition.z = (relativePortalPosition.z - 360f);
+				}	
+			
+			if(relativePortalPosition != defaultRotation)
+			{
+				if(relativePortalPosition == quarterRotationClockwise)
+				{
+					float newVerticalMovement = (xSpeed);
+					float newHorizontalMovement =  (-1f*ySpeed);
+					xSpeed = newHorizontalMovement;
+					ySpeed = newVerticalMovement;
+					animator.SetFloat("xSpeed", newHorizontalMovement);
+					animator.SetFloat("ySpeed", newVerticalMovement);
+				}
+				if(relativePortalPosition == halfRotation)
+				{
+					xSpeed *= -1f;
+					ySpeed *= -1f;
+					animator.SetFloat("xSpeed", xSpeed);
+					animator.SetFloat("ySpeed", ySpeed);
+				}
+				if(relativePortalPosition == threeQuarterRotationClockwise)
+				{
+					float newVerticalMovement = (-1f*xSpeed);
+					float newHorizontalMovement =  ySpeed;
+					xSpeed = newHorizontalMovement;
+					ySpeed = newVerticalMovement;
+					animator.SetFloat("xSpeed", newHorizontalMovement);
+					animator.SetFloat("ySpeed", newVerticalMovement);
+				}
+				
+			}
 		}
 	}
 	

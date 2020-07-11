@@ -6,13 +6,21 @@ using UnityEngine.UI;
 public class Placement : MonoBehaviour
 {
 	public GameObject[] allButtons;
-	public Button bridgeButton;
+	
 	public GameObject bridge;
+	public GameObject angularWall;
+	
+	public Button placeBridge;
+	public Button placeAngularWall;
+	
+	public Button rotateBridge;
+	public Button rotateAngularWall;
 	
 	enum ObjectType
 	{
 		None,
-		Bridge
+		Bridge,
+		AngularWall
 	}
 	
 	ObjectType currentObject = ObjectType.None;
@@ -20,14 +28,16 @@ public class Placement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bridgeButton.GetComponent<Button>().onClick.AddListener(PlaceBridges);
+        placeBridge.GetComponent<Button>().onClick.AddListener(PlaceBridge);
+        rotateBridge.GetComponent<Button>().onClick.AddListener(RotateBridge);
+        placeAngularWall.GetComponent<Button>().onClick.AddListener(PlaceAngularWall);
+        rotateAngularWall.GetComponent<Button>().onClick.AddListener(RotateAngularWall);
     }
 
     // Update is called once per frame
     void Update()
     {
 		Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		newPos.z = 0;
 		
 		foreach(GameObject go in allButtons)
 		{
@@ -48,7 +58,10 @@ public class Placement : MonoBehaviour
 			switch(currentObject)
 			{
 				case ObjectType.Bridge:
-					bridge.transform.position = newPos;
+					bridge.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);
+					break;
+				case ObjectType.AngularWall:
+					angularWall.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);
 					break;
 				default:
 					break;
@@ -56,8 +69,23 @@ public class Placement : MonoBehaviour
 		}
     }
 	
-	void PlaceBridges()
+	void PlaceBridge()
 	{
 		currentObject = ObjectType.Bridge;
+	}
+	
+	void PlaceAngularWall()
+	{
+		currentObject = ObjectType.AngularWall;
+	}
+	
+	void RotateBridge()
+	{
+		bridge.transform.eulerAngles = new Vector3(bridge.transform.eulerAngles.x, bridge.transform.eulerAngles.y, bridge.transform.eulerAngles.z + 90);
+	}
+	
+	void RotateAngularWall()
+	{
+		angularWall.transform.eulerAngles = new Vector3(angularWall.transform.eulerAngles.x, angularWall.transform.eulerAngles.y, angularWall.transform.eulerAngles.z + 90);
 	}
 }

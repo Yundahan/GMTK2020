@@ -151,4 +151,13 @@ public class CharacterController2D : MonoBehaviour
 	{
 		bridgeCounter += value;
 	}
+	
+	public void Turn(float value)
+	{
+		float tempx = xSpeed;
+		xSpeed = ySpeed * value;
+		ySpeed = tempx * value;
+		animator.SetFloat("xSpeed", xSpeed);
+		animator.SetFloat("ySpeed", ySpeed);
+	}
 }

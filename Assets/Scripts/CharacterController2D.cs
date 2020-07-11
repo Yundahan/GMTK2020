@@ -36,8 +36,12 @@ public class CharacterController2D : MonoBehaviour
 	private float initYPos;
 	private float initXSpeed;
 	private float initYSpeed;
-
-    private void Awake()
+	
+	public AudioSource MainThemePiano;
+	public AudioSource MainThemeOrchestra;
+	public AudioSource DeathTheme ;
+	
+	private void Awake()
     {      
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
@@ -51,6 +55,13 @@ public class CharacterController2D : MonoBehaviour
 		initYSpeed = ySpeed;
 		initXPos = transform.position.x;
 		initYPos = transform.position.y;
+		
+		MainThemeOrchestra.Play();
+		MainThemePiano.Play();
+		MainThemeOrchestra.volume = 0f;
+		MainThemePiano.volume = 1f;
+		
+
     }
 
     private void Update()
@@ -76,6 +87,9 @@ public class CharacterController2D : MonoBehaviour
 		float moveInputVertical = Input.GetAxisRaw("Vertical");
 		velocity.y = Mathf.MoveTowards(velocity.y, speed * moveInputVertical, walkAcceleration * Time.deltaTime);
 		*/
+		
+		
+			
     }
 	
 	void OnTriggerEnter2D(Collider2D col)
@@ -93,6 +107,10 @@ public class CharacterController2D : MonoBehaviour
 	{
 		walking = true;
 		startButton.GetComponent<Button>().interactable = false;
+		MainThemePiano.volume = 0;
+		MainThemeOrchestra.volume = 0.75f;
+		
+		
 	}
 	
 	void Restart()
@@ -105,6 +123,10 @@ public class CharacterController2D : MonoBehaviour
 		startButton.GetComponent<Button>().interactable = true;
 		restartButton.SetActive(false);
 		transform.position = new Vector2(initXPos, initYPos);
+		MainThemeOrchestra.Play();
+		MainThemeOrchestra.volume = 0;
+		MainThemePiano.Play();
+		MainThemePiano.volume = 1f;
 	}
 	
 	public void FallDown()
@@ -118,6 +140,10 @@ public class CharacterController2D : MonoBehaviour
 		falling = true;
 		velocity = new Vector2(0f, -1f);
 		restartButton.SetActive(true);
+		MainThemePiano.Stop();
+		MainThemeOrchestra.Stop();
+		DeathTheme.Play();
+		DeathTheme.volume = 0.3f;
 	}
 	
 	public void ChangeBridgeCounter(int value)

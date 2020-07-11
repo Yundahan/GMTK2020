@@ -7,6 +7,8 @@ public class Placement : MonoBehaviour
 {
 	public GameObject[] allButtons;
 	
+	public CharacterController2D charController;
+	
 	public GameObject bridge;
 	public GameObject angularWall;
 	
@@ -58,6 +60,11 @@ public class Placement : MonoBehaviour
 			switch(currentObject)
 			{
 				case ObjectType.Bridge:
+					if(charController.GetBridgeCounter() > 0)
+					{
+						return;
+					}
+					
 					bridge.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);
 					break;
 				case ObjectType.AngularWall:

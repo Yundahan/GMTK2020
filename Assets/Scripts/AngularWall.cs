@@ -8,6 +8,9 @@ public class AngularWall : MonoBehaviour
 	
 	private bool alreadyTurned = false;
 	
+	private bool ignoreX = false;
+	private bool ignoreY = false;
+	
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +22,24 @@ public class AngularWall : MonoBehaviour
     {
         
     }
+	
+	void OnTriggerEnter2D(Collider2D col)
+	{
+		if(col.gameObject.name == "Sleepyboi")
+		{
+			float distX = Mathf.Abs(col.gameObject.transform.position.x - transform.position.x);
+			float distY = Mathf.Abs(col.gameObject.transform.position.y - transform.position.y);
+			
+			if(distX <= 0.1f)
+			{
+				ignoreX = true;
+			}
+			else if(distY <= 0.1f)
+			{
+				ignoreY = true;
+			}
+		}
+	}
 	
 	void OnTriggerStay2D(Collider2D col)
 	{
@@ -32,7 +53,7 @@ public class AngularWall : MonoBehaviour
 			float distX = Mathf.Abs(col.gameObject.transform.position.x - transform.position.x);
 			float distY = Mathf.Abs(col.gameObject.transform.position.y - transform.position.y);
 			
-			if(distX > 0.1f && distY > 0.1f)
+			if(distX > 0.1f && distY > 0.1f || distX > 0.1f && ignoreY || distY > 0.1f && ignoreX)
 			{
 				return;
 			}
@@ -48,6 +69,9 @@ public class AngularWall : MonoBehaviour
 			{
 				col.gameObject.SendMessage("Turn", 1f);
 			}
+			
+			ignoreX = false;
+			ignoreY = false;
 		}
 	}
 	
@@ -55,12 +79,29 @@ public class AngularWall : MonoBehaviour
 	{
 		if(col.gameObject.name == "Sleepyboi")
 		{
-			ResetTurned();
+			ResetTurned(col.gameObject);
 		}
 	}
 	
-	void ResetTurned()
+	void ResetTurned(GameObject go)
 	{
 		alreadyTurned = false;
+		float distX = Mathf.Abs(go.transform.position.x - transform.position.x);
+		float distY = Mathf.Abs(go.transform.position.y - transform.position.y);
+		
+		if(distX <= 0.1f)
+		{
+			ignoreX = true;
+		}
+		else if(distY <= 0.1f)
+		{
+			ignoreY = true;
+		}
+		
+		if(distX <= 0.1f && distY <= 0.1f)
+		{
+			ignoreX = false;
+			ignoreY = false;
+		}
 	}
 }

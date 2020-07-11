@@ -115,7 +115,7 @@ public class CharacterController2D : MonoBehaviour
 			ySpeed *= -1f;
 			animator.SetFloat("xSpeed", xSpeed);
 			animator.SetFloat("ySpeed", ySpeed);
-			angularWall.SendMessage("ResetTurned");
+			angularWall.SendMessage("ResetTurned", gameObject);
 		}
 		
 		if(col.gameObject == orangePortal)
@@ -255,6 +255,11 @@ public class CharacterController2D : MonoBehaviour
 	public void ChangeBridgeCounter(int value)
 	{
 		bridgeCounter += value;
+	}
+	
+	public int GetBridgeCounter()
+	{
+		return bridgeCounter;
 	}
 	
 	public void Turn(float value)

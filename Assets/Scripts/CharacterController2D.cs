@@ -64,6 +64,7 @@ public class CharacterController2D : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+		animator.enabled = false;
 		bluePortalCollider = bluePortal.GetComponent<BoxCollider2D>();
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
@@ -109,7 +110,7 @@ public class CharacterController2D : MonoBehaviour
 			velocity = new Vector2(0f, 0f);
 			xSpeed = 0f;
 			ySpeed = 0f;
-			GetComponent<Animator>().enabled = false;
+			animator.enabled = false;
 			GetComponent<SpriteRenderer>().sprite = deadSprite;
 		}
 		
@@ -123,9 +124,6 @@ public class CharacterController2D : MonoBehaviour
 		float moveInputVertical = Input.GetAxisRaw("Vertical");
 		velocity.y = Mathf.MoveTowards(velocity.y, speed * moveInputVertical, walkAcceleration * Time.deltaTime);
 		*/
-		
-		
-			
     }
 	
 	void OnTriggerEnter2D(Collider2D col)
@@ -232,12 +230,11 @@ public class CharacterController2D : MonoBehaviour
 	
 	void StartWalking()
 	{
+		animator.enabled = true;
 		walking = true;
 		startButton.GetComponent<Button>().interactable = false;
 		MainThemePiano.volume = 0;
 		MainThemeOrchestra.volume = 0.75f;
-		
-		
 	}
 	
 	void Restart()
@@ -260,7 +257,7 @@ public class CharacterController2D : MonoBehaviour
 	
 	public void FallDown()
 	{
-		if(bridgeCounter > 0)
+		if(bridgeCounter > 0 || !falling)
 		{
 			return;
 		}

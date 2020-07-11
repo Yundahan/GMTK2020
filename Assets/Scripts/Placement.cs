@@ -9,7 +9,9 @@ public class Placement : MonoBehaviour
 	private BoxCollider2D[] allButtons;
 	
 	public GameObject wall;
-	private BoxCollider2D[] allColliders;
+	private BoxCollider2D[] allWallColliders;
+	public GameObject ground;
+	private BoxCollider2D[] allGroundColliders;
 	
 	public CharacterController2D charController;
 	
@@ -43,8 +45,10 @@ public class Placement : MonoBehaviour
         placeAngularWall.GetComponent<Button>().onClick.AddListener(PlaceAngularWall);
         rotateAngularWall.GetComponent<Button>().onClick.AddListener(RotateAngularWall);
 		placePortal.GetComponent<Button>().onClick.AddListener(PlacePortal);
+		
 		allButtons = canvas.GetComponentsInChildren<BoxCollider2D>();
-		allColliders = wall.GetComponentsInChildren<BoxCollider2D>();
+		allWallColliders = wall.GetComponentsInChildren<BoxCollider2D>();
+		allGroundColliders = ground.GetComponentsInChildren<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -76,17 +80,28 @@ public class Placement : MonoBehaviour
 						return;
 					}
 					
-					bridge.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);
+					bridge.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);//success
 					break;
 				case ObjectType.AngularWall:
-					angularWall.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);
+					newPos.z = 0;
+					
+					foreach(BoxCollider2D col in allGroundColliders)
+					{
+						float tempDist = Vector3.Distance(col.bounds.ClosestPoint(newPos), newPos);
+						
+						if(tempDist <= 0.01f)
+						{
+							angularWall.transform.position = new Vector3(Mathf.Floor(newPos.x) + 0.5f, Mathf.Floor(newPos.y) + 0.5f, 0);
+							return;//success
+						}
+					}
 					break;
 				case ObjectType.Portal:
 					newPos.z = 0;
-					float dist = 5000f;
+					float dist = 100000f;
 					Vector3 point = new Vector3(0f, 0f, 0f);
 					
-					foreach(BoxCollider2D col in allColliders)
+					foreach(BoxCollider2D col in allWallColliders)
 					{
 						Vector3 closestPoint = col.bounds.ClosestPoint(newPos);
 						float tempDist = Vector3.Distance(closestPoint, newPos);
@@ -102,7 +117,7 @@ public class Placement : MonoBehaviour
 					float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 					angle = Mathf.Round(angle / 90) * 90;
 					bluePortal.transform.position = point;
-					bluePortal.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+					bluePortal.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));//success
 					break;
 				default:
 					break;
@@ -117,7 +132,7 @@ public class Placement : MonoBehaviour
 				float dist = 5000f;
 				Vector3 point = new Vector3(0f, 0f, 0f);
 				
-				foreach(BoxCollider2D col in allColliders)
+				foreach(BoxCollider2D col in allWallColliders)
 				{
 					Vector3 closestPoint = col.bounds.ClosestPoint(newPos);
 					float tempDist = Vector3.Distance(closestPoint, newPos);
@@ -134,7 +149,7 @@ public class Placement : MonoBehaviour
 				angle += 180;
 				angle = Mathf.Round(angle / 90) * 90;
 				orangePortal.transform.position = point;
-				orangePortal.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+				orangePortal.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));//success
 			}
 		}
     }

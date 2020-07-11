@@ -7,32 +7,45 @@ using UnityEngine.UI;
 public class CharacterController2D : MonoBehaviour
 {
     [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
-    float speed = 9;
+    float speed = 5f;
 
-    [SerializeField, Tooltip("Acceleration while grounded.")]
-    float walkAcceleration = 75;
+    //[SerializeField, Tooltip("Acceleration while grounded.")]
+    //float walkAcceleration = 75;
 
 	public Button button;
+	public GameObject wall;
+	public GameObject ground;
 	
     private BoxCollider2D boxCollider;
+	private Animator animator;
 
     private Vector2 velocity;
 	
 	private bool walking = false;
+	private bool falling = false;
+	
 	private float xSpeed = 1f;
 	private float ySpeed = 0f;
 
     private void Awake()
     {      
         boxCollider = GetComponent<BoxCollider2D>();
+        animator = GetComponent<Animator>();
+		
         Button btn = button.GetComponent<Button>();
         btn.onClick.AddListener(TaskOnClick);
     }
 
     private void Update()
     {
-		if(!walking)
+		if(!walking && !falling)
 		{
+			return;
+		}
+		else if(!walking)
+		{
+			transform.Translate(velocity * Time.deltaTime);
+			velocity.y -= 1f;
 			return;
 		}
 		
@@ -48,8 +61,26 @@ public class CharacterController2D : MonoBehaviour
 		*/
     }
 	
+	void OnTriggerEnter2D(Collider2D col)
+	{
+		if(col.gameObject == wall)
+		{
+			xSpeed *= -1f;
+			ySpeed *= -1f;
+			animator.SetFloat("xSpeed", xSpeed);
+			animator.SetFloat("ySpeed", ySpeed);
+		}
+	}
+	
 	void TaskOnClick()
 	{
-		walking = !walking;
+		walking = true;
+	}
+	
+	public void FallDown()
+	{
+		walking = false;
+		falling = true;
+		velocity = new Vector2(0f, -1f);
 	}
 }

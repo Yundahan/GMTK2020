@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LightBehaviour : MonoBehaviour
-
-
 {
 	public bool lightswitch = true;
 	private SpriteRenderer spriteR;

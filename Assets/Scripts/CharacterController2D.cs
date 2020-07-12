@@ -41,8 +41,8 @@ public class CharacterController2D : MonoBehaviour
 	
 	private int bridgeCounter = 0;
 	
-	private float xSpeed = 1f;
-	private float ySpeed = 0f;
+	public float xSpeed = 1f;
+	public float ySpeed = 0f;
 	
 	private float initXPos;
 	private float initYPos;
@@ -68,8 +68,6 @@ public class CharacterController2D : MonoBehaviour
     {      
         boxCollider = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-		animator.enabled = false;
 		bluePortalCollider = bluePortal.GetComponent<BoxCollider2D>();
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
@@ -82,6 +80,11 @@ public class CharacterController2D : MonoBehaviour
 		initXPos = transform.position.x;
 		initYPos = transform.position.y;
 		initSprite = GetComponent<SpriteRenderer>().sprite;
+		
+        animator = GetComponent<Animator>();
+		animator.enabled = false;
+		animator.SetFloat("xSpeed", initXSpeed);
+		animator.SetFloat("ySpeed", initYSpeed);
 		
 		MusicController.SendMessage("Awake");
 		

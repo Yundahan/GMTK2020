@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
 	public GameObject bluePortal;  //Blue on left wall facing right is default
 	
     private BoxCollider2D boxCollider;
-	private Rigidbody2D rigidbody;
+	private Rigidbody2D rb;
 	
 	public GameObject angularWall;
 	
@@ -46,11 +46,11 @@ public class Enemy : MonoBehaviour
 	private void Awake()
     {      
         boxCollider = GetComponent<BoxCollider2D>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
 		bluePortalCollider = bluePortal.GetComponent<BoxCollider2D>();
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
-		rigidbody.isKinematic = true;
+		rb.isKinematic = true;
         restartButton.GetComponent<Button>().onClick.AddListener(Restart);
 		
 		initXSpeed = xSpeed;

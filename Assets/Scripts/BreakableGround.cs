@@ -8,12 +8,17 @@ public class BreakableGround : MonoBehaviour
 	
 	public GameObject groundCollider; //required!!
 	
+	public Sprite brokenSprite;
+	
+	private Sprite initSprite;
+	
 	Vector3 initGroundColliderPos;
 	
     // Start is called before the first frame update
     void Start()
     {
         initGroundColliderPos = groundCollider.transform.position;
+		initSprite = GetComponent<SpriteRenderer>().sprite;
     }
 
     // Update is called once per frame
@@ -43,5 +48,6 @@ public class BreakableGround : MonoBehaviour
 	{
 		broken = false;
 		groundCollider.transform.position = initGroundColliderPos;
+		GetComponent<SpriteRenderer>().sprite = initSprite;
 	}
 }

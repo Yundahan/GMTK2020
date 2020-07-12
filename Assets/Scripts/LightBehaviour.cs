@@ -6,8 +6,11 @@ public class LightBehaviour : MonoBehaviour
 
 
 {
-	private bool lightswitch = true;
+	public bool lightswitch = true;
 	private SpriteRenderer spriteR;
+	
+	bool initSwitch;
+	Sprite initSprite;
 	
 	public Sprite lightVisible;
 	public Sprite lightInvisible;
@@ -17,6 +20,9 @@ public class LightBehaviour : MonoBehaviour
     void Start()
     {
         spriteR = gameObject.GetComponent<SpriteRenderer>();
+		
+		initSwitch = lightSwitch;
+		initSprite = spriteR.sprite;
     }
 
     // Update is called once per frame
@@ -39,15 +45,14 @@ public class LightBehaviour : MonoBehaviour
 	
 	void LightsOn()
 	{
-	lightswitch = true;	
-	spriteR.sprite = lightVisible;
-		
+		lightswitch = true;	
+		spriteR.sprite = lightVisible;
 	}
 	
 	void LightsOff()
 	{
-	 lightswitch = false;
-	 spriteR.sprite = lightInvisible;	
+		lightswitch = false;
+		spriteR.sprite = lightInvisible;	
 	}
 
 	void buttonTriggered()
@@ -60,5 +65,11 @@ public class LightBehaviour : MonoBehaviour
 		{
 			LightsOn();	
 		}	
+	}
+	
+	void Reset()
+	{
+		spriteR = initSprite;
+		lightSwitch = initSwitch;
 	}
 }

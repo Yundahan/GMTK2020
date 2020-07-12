@@ -33,6 +33,7 @@ public class BreakableGround : MonoBehaviour
 		{
 			broken = true;
 			groundCollider.transform.position = new Vector3(5000f, 5000f, 0f);
+			GetComponent<SpriteRenderer>().sprite = brokenSprite;
 		}
 	}
 	

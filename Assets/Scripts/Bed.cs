@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Bed : MonoBehaviour
 {
 	public string nextLevel;
+	//public GameObject MusicController;
 	
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,8 @@ public class Bed : MonoBehaviour
 		if(col.gameObject.name == "Sleepyboi")
 		{
 			StartCoroutine(LoadYourAsyncScene());
+			
+			//MusicController.SendMessage("Awake");
 		}
 	}
 

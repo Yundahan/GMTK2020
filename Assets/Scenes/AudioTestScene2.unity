@@ -1410,7 +1410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightswitch: 1
-  restartButton: {fileID: 0}
+  restartButton: {fileID: 1590136382}
   lightVisible: {fileID: 21300000, guid: 4349da40b4f37f04d827e5cdf1ccde96, type: 3}
   lightInvisible: {fileID: 21300000, guid: a7a5613ab5ab7ad409c6dd286ab31b89, type: 3}
 --- !u!61 &611625677
@@ -1888,7 +1888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   open: {fileID: 21300000, guid: a609d6e132916fb458e1d680c28b84b2, type: 3}
   closed: {fileID: 21300000, guid: 840cc0eff92e0c943896c968cf17700b, type: 3}
-  restartButton: {fileID: 0}
+  restartButton: {fileID: 1590136382}
   isOpen: 0
   outcomePos: {x: 0, y: 0, z: 0}
 --- !u!212 &768843412
@@ -7268,7 +7268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ea6e3abc509b14a8d48696541ec5c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: MasterScene
+  nextLevel: AudioSampleScene
 --- !u!61 &1172645874
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7353,7 +7353,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172645872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.04, y: 1.72, z: 0}
+  m_LocalPosition: {x: -3.06, y: -4.5, z: 0}
   m_LocalScale: {x: 11.992708, y: 12.912429, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -8021,7 +8021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundCollider: {fileID: 1112180477}
-  restartButton: {fileID: 0}
+  restartButton: {fileID: 1590136382}
   brokenSprite: {fileID: 21300000, guid: 196b41c1beda40f4b9072e96aa627bc5, type: 3}
 --- !u!212 &1310579354
 SpriteRenderer:
@@ -17855,6 +17855,7 @@ GameObject:
   - component: {fileID: 1923980436}
   - component: {fileID: 1923980435}
   - component: {fileID: 1923980434}
+  - component: {fileID: 1923980438}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -17906,8 +17907,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 611625676}
-        m_MethodName: SendMessage
-        m_Mode: 5
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -17915,7 +17916,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: LightsOff
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
 --- !u!114 &1923980435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17973,6 +17974,20 @@ RectTransform:
   m_AnchoredPosition: {x: -401, y: -97}
   m_SizeDelta: {x: 160, y: 36.49951}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1923980438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923980433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c74765fa6ed9d4380e4ad071e0c6cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLevel: AudioSampleScene
+  button: {fileID: 0}
 --- !u!1 &2013143267
 GameObject:
   m_ObjectHideFlags: 0

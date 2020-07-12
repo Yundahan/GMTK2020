@@ -22,6 +22,7 @@ public class CharacterController2D : MonoBehaviour
 	public GameObject ground;
 	public GameObject orangePortal; //Orange on right wall facing left is default
 	public GameObject bluePortal;  //Blue on left wall facing right is default
+	public GameObject MusicController;
 	
     private BoxCollider2D boxCollider;
 	private Animator animator;
@@ -51,9 +52,10 @@ public class CharacterController2D : MonoBehaviour
 	public Sprite deadSprite;
 	private Sprite initSprite;
 	
-	public AudioSource MainThemePiano;
+	
+	/*public AudioSource MainThemePiano;
 	public AudioSource MainThemeOrchestra;
-	public AudioSource DeathTheme ;
+	public AudioSource DeathTheme ;*/
 	
 	private Vector3 defaultRotation = new Vector3(0,0,0f);
 	private Vector3 quarterRotationClockwise = new Vector3(0,0,270f);
@@ -81,10 +83,7 @@ public class CharacterController2D : MonoBehaviour
 		initYPos = transform.position.y;
 		initSprite = GetComponent<SpriteRenderer>().sprite;
 		
-		MainThemeOrchestra.Play();
-		MainThemePiano.Play();
-		MainThemeOrchestra.volume = 0f;
-		MainThemePiano.volume = 1f;
+		MusicController.SendMessage("Awake");
 		
 		collisionsRemaining.text = maxCollisions.ToString();
     }
@@ -282,8 +281,7 @@ public class CharacterController2D : MonoBehaviour
 		animator.enabled = true;
 		walking = true;
 		startButton.GetComponent<Button>().interactable = false;
-		MainThemePiano.volume = 0;
-		MainThemeOrchestra.volume = 0.75f;
+		MusicController.SendMessage("StartWalking");
 	}
 	
 	void Restart()
@@ -301,10 +299,7 @@ public class CharacterController2D : MonoBehaviour
 		velocity = new Vector2(0f, 0f);
 		animator.enabled = false;
 		GetComponent<SpriteRenderer>().sprite = initSprite;
-		MainThemeOrchestra.Play();
-		MainThemeOrchestra.volume = 0;
-		MainThemePiano.Play();
-		MainThemePiano.volume = 1f;
+		MusicController.SendMessage("Restart");
 		collisionsRemaining.text = maxCollisions.ToString();
 	}
 	
@@ -334,10 +329,7 @@ public class CharacterController2D : MonoBehaviour
 	{
 		collisionCount = 0;
 		restartButton.SetActive(true);
-		MainThemePiano.Stop();
-		MainThemeOrchestra.Stop();
-		DeathTheme.Play();
-		DeathTheme.volume = 0.3f;
+		MusicController.SendMessage("WakeUp");
 		animator.enabled = false;
 		GetComponent<SpriteRenderer>().sprite = deadSprite;
 		angularWall.SendMessage("Reset");

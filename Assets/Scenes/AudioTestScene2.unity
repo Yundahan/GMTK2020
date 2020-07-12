@@ -426,7 +426,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.88, y: 0.96}
+    oldSize: {x: 9, y: 3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -7488,6 +7488,8 @@ MonoBehaviour:
   bluePortal: {fileID: 350402006}
   MusicController: {fileID: 0}
   angularWall: {fileID: 48023599}
+  xSpeed: 1
+  ySpeed: 0
   deadSprite: {fileID: 21300000, guid: 3bd12033ace7210488e8967c4a41e948, type: 3}
   collisionsRemaining: {fileID: 1066948660}
 --- !u!61 &1223028373
@@ -17987,7 +17989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextLevel: AudioSampleScene
-  button: {fileID: 0}
+  button: {fileID: 1923980434}
 --- !u!1 &2013143267
 GameObject:
   m_ObjectHideFlags: 0

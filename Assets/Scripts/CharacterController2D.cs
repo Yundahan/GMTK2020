@@ -25,7 +25,7 @@ public class CharacterController2D : MonoBehaviour
 	
     private BoxCollider2D boxCollider;
 	private Animator animator;
-	private Rigidbody2D rigidbody;
+	private Rigidbody2D rb;
 	
 	public GameObject angularWall;
 	
@@ -60,16 +60,18 @@ public class CharacterController2D : MonoBehaviour
 	private Vector3 halfRotation = new Vector3 (0,0,180f);
 	private Vector3 threeQuarterRotationClockwise = new Vector3(0,0,90f);
 	
+	public Text collisionsRemaining;
+	
 	private void Awake()
     {      
         boxCollider = GetComponent<BoxCollider2D>();
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 		animator.enabled = false;
 		bluePortalCollider = bluePortal.GetComponent<BoxCollider2D>();
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
-		rigidbody.isKinematic = true;
+		rb.isKinematic = true;
         startButton.GetComponent<Button>().onClick.AddListener(StartWalking);
         restartButton.GetComponent<Button>().onClick.AddListener(Restart);
 		
@@ -84,7 +86,7 @@ public class CharacterController2D : MonoBehaviour
 		MainThemeOrchestra.volume = 0f;
 		MainThemePiano.volume = 1f;
 		
-
+		collisionsRemaining.text = maxCollisions.ToString();
     }
 
     private void Update()
@@ -102,7 +104,7 @@ public class CharacterController2D : MonoBehaviour
 		if(!walking)
 		{
 			transform.Translate(velocity * Time.deltaTime);
-			velocity.y -= 1f;
+			velocity.y -= 0.1f;
 			return;
 		}
 		
@@ -133,6 +135,7 @@ public class CharacterController2D : MonoBehaviour
 			animator.SetFloat("ySpeed", ySpeed);
 			angularWall.SendMessage("ResetTurned", gameObject);
 			collisionCount++;
+			collisionsRemaining.text = (maxCollisions - collisionCount).ToString();
 		}
 		
 		if(col.gameObject == orangePortal)
@@ -302,6 +305,7 @@ public class CharacterController2D : MonoBehaviour
 		MainThemeOrchestra.volume = 0;
 		MainThemePiano.Play();
 		MainThemePiano.volume = 1f;
+		collisionsRemaining.text = maxCollisions.ToString();
 	}
 	
 	public void FallDown()
@@ -328,6 +332,7 @@ public class CharacterController2D : MonoBehaviour
 	
 	public void WakeUp()
 	{
+		collisionCount = 0;
 		restartButton.SetActive(true);
 		MainThemePiano.Stop();
 		MainThemeOrchestra.Stop();
@@ -335,6 +340,7 @@ public class CharacterController2D : MonoBehaviour
 		DeathTheme.volume = 0.3f;
 		animator.enabled = false;
 		GetComponent<SpriteRenderer>().sprite = deadSprite;
+		angularWall.SendMessage("Reset");
 	}	
 	
 	public void ChangeBridgeCounter(int value)
@@ -360,5 +366,6 @@ public class CharacterController2D : MonoBehaviour
 		animator.SetFloat("xSpeed", xSpeed);
 		animator.SetFloat("ySpeed", ySpeed);
 		collisionCount++;
+		collisionsRemaining.text = (maxCollisions - collisionCount).ToString();
 	}
 }

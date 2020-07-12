@@ -177,6 +177,11 @@ public class Placement : MonoBehaviour
 	
 	void RotateBridge()
 	{
+		if(charController.GetBridgeCounter() > 0 && charController.GetWalking())
+		{
+			return;
+		}
+					
 		bridge.transform.eulerAngles = new Vector3(bridge.transform.eulerAngles.x, bridge.transform.eulerAngles.y, bridge.transform.eulerAngles.z + 90);
 	}
 	

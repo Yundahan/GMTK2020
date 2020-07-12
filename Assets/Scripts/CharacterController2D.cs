@@ -134,6 +134,12 @@ public class CharacterController2D : MonoBehaviour
 			animator.SetFloat("ySpeed", ySpeed);
 			angularWall.SendMessage("ResetTurned", gameObject);
 			collisionCount++;
+		
+			if(collisionCount > maxCollisions)
+			{
+				collisionCount = maxCollisions;
+			}
+		
 			collisionsRemaining.text = (maxCollisions - collisionCount).ToString();
 		}
 		
@@ -358,6 +364,12 @@ public class CharacterController2D : MonoBehaviour
 		animator.SetFloat("xSpeed", xSpeed);
 		animator.SetFloat("ySpeed", ySpeed);
 		collisionCount++;
+		
+		if(collisionCount > maxCollisions)
+		{
+			collisionCount = maxCollisions;
+		}
+		
 		collisionsRemaining.text = (maxCollisions - collisionCount).ToString();
 	}
 }

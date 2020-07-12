@@ -479,7 +479,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: However, [HNE] is sleepwalking.
+  m_Text: However, Somni is sleepwalking.
 --- !u!222 &136700489
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1016,13 +1016,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Your Goal is to bring \n[HNE] safely to bed."
+  m_Text: "Your Goal is to bring \nSomni safely to bed."
 --- !u!222 &267446449
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3889,8 +3889,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: But Fear not! You have many a tool at your disposal to save poor HNE from
-    a rude awakening!
+  m_Text: But Fear not! You have many a tool at your disposal to save poor Somni
+    from a rude awakening!
 --- !u!222 &1067601413
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4714,13 +4714,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "This is \n[HIER NAMEN EINF\xDCGEN]."
+  m_Text: This is Somni.
 --- !u!222 &1245489809
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8585,7 +8585,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 417.4, y: 52.047}
+  m_AnchoredPosition: {x: 412.8, y: 55.9}
   m_SizeDelta: {x: 99.31436, y: 265.469}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770262940
@@ -9329,7 +9329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2013143267}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.22, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 684843153}
@@ -17136,7 +17136,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Ghosts, Empty Voids,
 
-    Banging your head into too many walls...'
+    Banging somni into too many walls...'
 --- !u!222 &2022128602
 CanvasRenderer:
   m_ObjectHideFlags: 0

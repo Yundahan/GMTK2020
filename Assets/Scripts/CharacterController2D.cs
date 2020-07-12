@@ -150,6 +150,7 @@ public class CharacterController2D : MonoBehaviour
 			if(collisionCount > maxCollisions)
 			{
 				collisionCount = maxCollisions;
+				WakeUpStill();
 			}
 		
 			collisionsRemaining.text = (maxCollisions - collisionCount).ToString();
@@ -380,6 +381,7 @@ public class CharacterController2D : MonoBehaviour
 		if(collisionCount > maxCollisions)
 		{
 			collisionCount = maxCollisions;
+			WakeUpStill();
 		}
 		
 		collisionsRemaining.text = (maxCollisions - collisionCount).ToString();

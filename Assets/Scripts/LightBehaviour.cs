@@ -21,7 +21,7 @@ public class LightBehaviour : MonoBehaviour
     {
         spriteR = gameObject.GetComponent<SpriteRenderer>();
 		
-		initSwitch = lightSwitch;
+		initSwitch = lightswitch;
 		initSprite = spriteR.sprite;
     }
 
@@ -69,7 +69,7 @@ public class LightBehaviour : MonoBehaviour
 	
 	void Reset()
 	{
-		spriteR = initSprite;
-		lightSwitch = initSwitch;
+		spriteR.sprite = initSprite;
+		lightswitch = initSwitch;
 	}
 }

@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BreakableGround : MonoBehaviour
 {
 	bool broken = false;
 	
 	public GameObject groundCollider; //required!!
+	
+	public GameObject restartButton;
 	
 	public Sprite brokenSprite;
 	
@@ -19,6 +22,8 @@ public class BreakableGround : MonoBehaviour
     {
         initGroundColliderPos = groundCollider.transform.position;
 		initSprite = GetComponent<SpriteRenderer>().sprite;
+		
+        restartButton.GetComponent<Button>().onClick.AddListener(Reset);
     }
 
     // Update is called once per frame

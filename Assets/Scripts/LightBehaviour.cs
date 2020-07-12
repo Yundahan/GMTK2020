@@ -48,6 +48,17 @@ public class LightBehaviour : MonoBehaviour
 	{
 	 lightswitch = false;
 	 spriteR.sprite = lightInvisible;	
-	}	
-	
+	}
+
+	void buttonTriggered()
+	{
+		if(lightswitch)
+		{
+			LightsOff();		
+		}
+		else
+		{
+			LightsOn();	
+		}	
+	}
 }

@@ -30,8 +30,14 @@ public class MusicController : MonoBehaviour
 	
 	 void Awake()
     {
-		MainThemeOrchestra.Play();
-		MainThemePiano.Play();
+		if (!MainThemeOrchestra.isPlaying)
+		{	
+			MainThemeOrchestra.Play();
+		}
+		if (!MainThemePiano.isPlaying)
+		{
+			MainThemePiano.Play();
+		}	
 		MainThemeOrchestra.volume = 0f;
 		MainThemePiano.volume = 1f;
 

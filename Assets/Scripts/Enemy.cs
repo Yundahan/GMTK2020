@@ -33,6 +33,8 @@ public class Enemy : MonoBehaviour
 	public float xSpeed;
 	public float ySpeed;
 	
+	private bool walking = false;
+	
 	private float initXPos;
 	private float initYPos;
 	private float initXSpeed;
@@ -51,6 +53,7 @@ public class Enemy : MonoBehaviour
 		orangePortalCollider = orangePortal.GetComponent<BoxCollider2D>();
 		
 		rb.isKinematic = true;
+        startButton.GetComponent<Button>().onClick.AddListener(StartWalking);
         restartButton.GetComponent<Button>().onClick.AddListener(Restart);
 		
 		initXSpeed = xSpeed;
@@ -61,6 +64,11 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+		if(!walking)
+		{
+			return;
+		}
+		
 		transform.Translate(velocity * Time.deltaTime);
 		velocity.x = speed * xSpeed;
 		velocity.y = speed * ySpeed;
@@ -214,6 +222,11 @@ public class Enemy : MonoBehaviour
 		}
 	}
 	
+	public void StartWalking()
+	{
+		walking = true;
+	}
+	
 	public void Kill()
 	{
 		transform.position = new Vector3(5000f, 5000f, 0f);
@@ -227,6 +240,7 @@ public class Enemy : MonoBehaviour
 		restartButton.SetActive(false);
 		transform.position = new Vector2(initXPos, initYPos);
 		velocity = new Vector2(0f, 0f);
+		walking = false;
 	}
 	
 	public void Turn(float value)

@@ -214,6 +214,11 @@ public class Enemy : MonoBehaviour
 		}
 	}
 	
+	public void Kill()
+	{
+		transform.position = new Vector3(5000f, 5000f, 0f);
+	}
+	
 	void Restart()
 	{
 		xSpeed = initXSpeed;

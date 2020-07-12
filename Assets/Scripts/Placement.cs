@@ -27,6 +27,8 @@ public class Placement : MonoBehaviour
 	public Button rotateBridge;
 	public Button rotateAngularWall;
 	
+	public bool blueOnly = false;
+	
 	enum ObjectType
 	{
 		None,
@@ -132,7 +134,7 @@ public class Placement : MonoBehaviour
 		
 		if(Input.GetMouseButtonDown(1))
 		{
-			if(currentObject == ObjectType.Portal)
+			if(currentObject == ObjectType.Portal && !blueOnly)
 			{
 				newPos.z = 0;
 				float dist = 5000f;

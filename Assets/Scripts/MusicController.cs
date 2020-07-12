@@ -20,7 +20,10 @@ public class MusicController : MonoBehaviour
 	
 	private GameObject ControllerObject;
 	private IEnumerator[] fader = new IEnumerator[2];
-	 private int volumeChangesPerSecond = 15;
+	private int volumeChangesPerSecond = 15;
+	private AudioSource currentlyPlayingPiano;
+	private AudioSource currentlyPlayingOrchestra; 
+	
 
 	
     // Start is called before the first frame update
@@ -40,7 +43,12 @@ public class MusicController : MonoBehaviour
 		Scene scene = SceneManager.GetActiveScene();
 		if (scene.name == "TutorialScene" || scene.name == "TutorialScene2")
 		{
-			TutorialTheme.Play();	
+			if(!TutorialTheme.isPlaying)
+			{
+				TutorialTheme.Play();
+				currentlyPlayingPiano = MainThemePiano;
+				currentlyPlayingOrchestra = MainThemeOrchestra;
+			}	
 		}
 		else 
 		{
@@ -51,16 +59,24 @@ public class MusicController : MonoBehaviour
 			if (!MainThemeOrchestra.isPlaying)
 			{	
 				MainThemeOrchestra.Play();
+				AltThemeOrchestra.Play();
 			}
 			if (!MainThemePiano.isPlaying)
 			{
 				MainThemePiano.Play();
+				AltThemePiano.volume = 0f;
+				AltThemePiano.Play();
+			}
+		if (scene.name == "Level_4")
+			{
+				currentlyPlayingOrchestra = AltThemeOrchestra;
+				currentlyPlayingPiano = AltThemePiano;
 			}	
-			/*MainThemeOrchestra.volume = 0f;
-			MainThemePiano.volume = 1f;*/
-		fader[0] = FadeAudioSource(MainThemeOrchestra, 1f, 0.0f, () => { fader[0] = null; });
+		/*MainThemeOrchestra.volume = 0f;
+		MainThemePiano.volume = 1f;*/
+		fader[0] = FadeAudioSource(currentlyPlayingOrchestra, 1f, 0.0f, () => { fader[0] = null; });
         StartCoroutine(fader[0]);
-		fader[1] = FadeAudioSource(MainThemePiano, 1f, 1f, () => { fader[1] = null; });
+		fader[1] = FadeAudioSource(currentlyPlayingPiano, 1f, 1f, () => { fader[1] = null; });
         StartCoroutine(fader[1]);		
 		}
 			
@@ -69,30 +85,30 @@ public class MusicController : MonoBehaviour
 		
 	void Restart ()
 	{
-		//MainThemeOrchestra.volume = 0;
-		//MainThemePiano.volume = 1f;
-		fader[0] = FadeAudioSource(MainThemeOrchestra, 1f, 0.0f, () => { fader[0] = null; });
+		//currentlyPlayingOrchestra.volume = 0;
+		//currentlyPlayingPiano.volume = 1f;
+		fader[0] = FadeAudioSource(currentlyPlayingOrchestra, 1f, 0.0f, () => { fader[0] = null; });
         StartCoroutine(fader[0]);
-		fader[1] = FadeAudioSource(MainThemePiano, 1f, 1f, () => { fader[1] = null; });
+		fader[1] = FadeAudioSource(currentlyPlayingPiano, 1f, 1f, () => { fader[1] = null; });
         StartCoroutine(fader[1]);		
 		
 	}
 	
 	void StartWalking()
 	{
-		//MainThemePiano.volume = 0;
-		//MainThemeOrchestra.volume = 0.75f;
-		fader[0] = FadeAudioSource(MainThemePiano, 1f, 0.0f, () => { fader[0] = null; });
+		//currentlyPlayingPiano.volume = 0;
+		//currentlyPlayingOrchestra.volume = 0.75f;
+		fader[0] = FadeAudioSource(currentlyPlayingPiano, 1f, 0.0f, () => { fader[0] = null; });
         StartCoroutine(fader[0]);
-		fader[1] = FadeAudioSource(MainThemeOrchestra, 1f, 0.75f, () => { fader[1] = null; });
+		fader[1] = FadeAudioSource(currentlyPlayingOrchestra, 1f, 0.75f, () => { fader[1] = null; });
         StartCoroutine(fader[1]);
 		
 	}
 	
 	void WakeUp()
 	{
-		MainThemeOrchestra.volume = 0f;
-		MainThemePiano.volume = 0f;
+		currentlyPlayingOrchestra.volume = 0f;
+		currentlyPlayingPiano.volume = 0f;
 		DeathTheme.volume = 0.3f;
 		DeathTheme.Play();
 

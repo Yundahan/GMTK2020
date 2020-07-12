@@ -115,7 +115,11 @@ public class CharacterController2D : MonoBehaviour
 			return;
 		}
 		
-		if(collisionCount >= maxCollisions)
+		if(collisionCount > maxCollisions || 
+		   transform.position.x > 1000f || 
+		   transform.position.x < -1000f || 
+		   transform.position.y > 1000f || 
+		   transform.position.y < -1000f)
 		{
 			WakeUpStill();
 		}

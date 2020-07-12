@@ -8109,7 +8109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ea6e3abc509b14a8d48696541ec5c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: Level_9
+  nextLevel: EndingScene
 --- !u!61 &1172645874
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9164,7 +9164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 56, y: 23.270004}
+  m_AnchoredPosition: {x: 56, y: 23.27002}
   m_SizeDelta: {x: 111.99298, y: 46.438065}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1443771229

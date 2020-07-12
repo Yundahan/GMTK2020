@@ -69,7 +69,11 @@ public class MusicController : MonoBehaviour
 			}
 		if (scene.name == "Level_4")
 			{
+				fader[0] = FadeAudioSource(currentlyPlayingOrchestra, 1f, 0.0f, () => { fader[0] = null; });
+				StartCoroutine(fader[0]);
 				currentlyPlayingOrchestra = AltThemeOrchestra;
+				fader[0] = FadeAudioSource(currentlyPlayingPiano, 1f, 0.0f, () => { fader[0] = null; });
+				StartCoroutine(fader[0]);
 				currentlyPlayingPiano = AltThemePiano;
 			}	
 		/*MainThemeOrchestra.volume = 0f;

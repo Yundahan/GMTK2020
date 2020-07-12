@@ -17,6 +17,7 @@ public class MusicController : MonoBehaviour
 	public AudioSource TutorialTheme;
 	public AudioSource AltThemePiano;
 	public AudioSource AltThemeOrchestra;
+	public AudioSource EndingJingle;
 	
 	private GameObject ControllerObject;
 	private IEnumerator[] fader = new IEnumerator[2];
@@ -83,6 +84,14 @@ public class MusicController : MonoBehaviour
 		fader[1] = FadeAudioSource(currentlyPlayingPiano, 1f, 1f, () => { fader[1] = null; });
         StartCoroutine(fader[1]);		
 		}
+		if (scene.name == "EndingScene")
+		{
+			currentlyPlayingOrchestra.Stop();
+			currentlyPlayingPiano.Stop();
+			EndingJingle.Play();
+		}
+			
+			
 			
         DontDestroyOnLoad(this.gameObject);
     }

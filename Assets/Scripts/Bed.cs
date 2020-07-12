@@ -24,6 +24,8 @@ public class Bed : MonoBehaviour
 		if(col.gameObject.name == "Sleepyboi")
 		{
 			StartCoroutine(LoadYourAsyncScene());
+			
+			//MusicController.SendMessage("Awake");
 		}
 	}
 

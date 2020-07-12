@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class CharacterController2D : MonoBehaviour
@@ -86,9 +87,13 @@ public class CharacterController2D : MonoBehaviour
 		animator.SetFloat("xSpeed", initXSpeed);
 		animator.SetFloat("ySpeed", initYSpeed);
 		
-		MusicController.SendMessage("Awake");
-		
 		collisionsRemaining.text = maxCollisions.ToString();
+		
+		GameObject[] controlArray = new GameObject[4];
+		controlArray= GameObject.FindGameObjectsWithTag("MusicController");
+		//Debug.Log(controlArray[0]);
+		MusicController = controlArray[0];
+		MusicController.SendMessage("Awake");
     }
 
     private void Update()
@@ -375,4 +380,18 @@ public class CharacterController2D : MonoBehaviour
 		
 		collisionsRemaining.text = (maxCollisions - collisionCount).ToString();
 	}
+	 void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+ 
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+ 
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        MusicController = GameObject.FindWithTag("MusicController");
+    }
 }

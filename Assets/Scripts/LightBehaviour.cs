@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LightBehaviour : MonoBehaviour
 
@@ -8,6 +9,8 @@ public class LightBehaviour : MonoBehaviour
 {
 	public bool lightswitch = true;
 	private SpriteRenderer spriteR;
+	
+	public GameObject restartButton;
 	
 	bool initSwitch;
 	Sprite initSprite;
@@ -20,6 +23,8 @@ public class LightBehaviour : MonoBehaviour
     void Start()
     {
         spriteR = gameObject.GetComponent<SpriteRenderer>();
+		
+        restartButton.GetComponent<Button>().onClick.AddListener(Reset);
 		
 		initSwitch = lightswitch;
 		initSprite = spriteR.sprite;

@@ -288,15 +288,16 @@ public class CharacterController2D : MonoBehaviour
 	{
 		walking = false;
 		falling = false;
+		dead = false;
 		xSpeed = initXSpeed;
 		ySpeed = initYSpeed;
 		animator.SetFloat("xSpeed", initXSpeed);
 		animator.SetFloat("ySpeed", initYSpeed);
 		bridgeCounter = 0;
+		collisionCount = 0;
 		startButton.GetComponent<Button>().interactable = true;
 		restartButton.SetActive(false);
 		transform.position = new Vector2(initXPos, initYPos);
-		velocity = new Vector2(0f, 0f);
 		animator.enabled = false;
 		GetComponent<SpriteRenderer>().sprite = initSprite;
 		MusicController.SendMessage("Restart");
@@ -327,7 +328,6 @@ public class CharacterController2D : MonoBehaviour
 	
 	public void WakeUp()
 	{
-		collisionCount = 0;
 		restartButton.SetActive(true);
 		MusicController.SendMessage("WakeUp");
 		animator.enabled = false;

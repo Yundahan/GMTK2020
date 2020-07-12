@@ -1410,6 +1410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightswitch: 1
+  restartButton: {fileID: 1590136382}
   lightVisible: {fileID: 21300000, guid: 4349da40b4f37f04d827e5cdf1ccde96, type: 3}
   lightInvisible: {fileID: 21300000, guid: a7a5613ab5ab7ad409c6dd286ab31b89, type: 3}
 --- !u!61 &611625677
@@ -1496,7 +1497,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611625675}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.56, y: -4.442, z: 0}
+  m_LocalPosition: {x: 2.75, y: -5.23, z: 0}
   m_LocalScale: {x: 12.113762, y: 12.337188, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1887,6 +1888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   open: {fileID: 21300000, guid: a609d6e132916fb458e1d680c28b84b2, type: 3}
   closed: {fileID: 21300000, guid: 840cc0eff92e0c943896c968cf17700b, type: 3}
+  restartButton: {fileID: 1590136382}
   isOpen: 0
   outcomePos: {x: 0, y: 0, z: 0}
 --- !u!212 &768843412
@@ -8021,6 +8023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundCollider: {fileID: 1112180477}
+  restartButton: {fileID: 1590136382}
   brokenSprite: {fileID: 21300000, guid: 196b41c1beda40f4b9072e96aa627bc5, type: 3}
 --- !u!212 &1310579354
 SpriteRenderer:

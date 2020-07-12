@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Door : MonoBehaviour
 {
 	public Sprite open;
 	public Sprite closed;
+	
+	public GameObject restartButton;
 	
 	private Sprite initSprite;
 	
@@ -30,6 +33,8 @@ public class Door : MonoBehaviour
 			initSprite = closed;
 			GetComponent<SpriteRenderer>().sprite = closed;
 		}
+		
+        restartButton.GetComponent<Button>().onClick.AddListener(Reset);
     }
 
     // Update is called once per frame

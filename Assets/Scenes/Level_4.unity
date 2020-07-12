@@ -7610,11 +7610,11 @@ MonoBehaviour:
   orangePortal: {fileID: 1496642822}
   bluePortal: {fileID: 350402006}
   MusicController: {fileID: 0}
-  angularWall: {fileID: 0}
-  xSpeed: 1
-  ySpeed: 0
-  deadSprite: {fileID: 0}
-  collisionsRemaining: {fileID: 0}
+  angularWall: {fileID: 48023599}
+  xSpeed: 0
+  ySpeed: -1
+  deadSprite: {fileID: 21300000, guid: 3bd12033ace7210488e8967c4a41e948, type: 3}
+  collisionsRemaining: {fileID: 1066948660}
 --- !u!61 &1223028373
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -8240,7 +8240,9 @@ MonoBehaviour:
   ground: {fileID: 1519638879}
   orangePortal: {fileID: 1496642822}
   bluePortal: {fileID: 350402006}
+
   MusicController: {fileID: 679582101}
+  
   angularWall: {fileID: 48023599}
   xSpeed: 0
   ySpeed: -1

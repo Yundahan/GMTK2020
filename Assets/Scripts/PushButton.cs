@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PushButton : MonoBehaviour
-
-
 {
 	private SpriteRenderer spriteR;
 	
@@ -28,13 +26,19 @@ public class PushButton : MonoBehaviour
 	
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		triggeredObject.SendMessage("buttonTriggered");
-		spriteR.sprite = buttonPressed;
+		if(col.gameObject.name == "Sleepyboi")
+		{
+			triggeredObject.SendMessage("buttonTriggered");
+			spriteR.sprite = buttonPressed;
+		}
 	}
 	
 	void OnTriggerExit2D (Collider2D col)
 	{
-		spriteR.sprite = buttonUnpressed;
+		if(col.gameObject.name == "Sleepyboi")
+		{
+			spriteR.sprite = buttonUnpressed;
+		}
 
 	}	
 	
